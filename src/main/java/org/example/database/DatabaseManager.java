@@ -1,0 +1,4 @@
+package org.example.database;
+
+public interface DatabaseManager {
+}
