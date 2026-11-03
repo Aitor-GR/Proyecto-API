@@ -1,0 +1,11 @@
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: abc123
+      MYSQL_DATABASE: deadlock
+      MYSQL_USER: usuario
+      MYSQL_PASSWORD: usuario1234
+    ports:
+      - "3307:3306"
