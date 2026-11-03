@@ -2,7 +2,7 @@ package org.example.models;
 
 import java.util.List;
 
-public class ResponseItem{
+public class Hero {
 	private boolean assignedPlayersOnly;
 	private String gender;
 	private Description description;

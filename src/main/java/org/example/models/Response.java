@@ -3,13 +3,13 @@ package org.example.models;
 import java.util.List;
 
 public class Response{
-	private List<ResponseItem> response;
+	private List<Hero> response;
 
-	public void setResponse(List<ResponseItem> response){
+	public void setResponse(List<Hero> response){
 		this.response = response;
 	}
 
-	public List<ResponseItem> getResponse(){
+	public List<Hero> getResponse(){
 		return response;
 	}
 
