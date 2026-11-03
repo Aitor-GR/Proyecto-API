@@ -4,6 +4,8 @@ import org.example.models.Hero;
 
 import java.util.List;
 
-public interface HeroRepository {
+public interface HeroRepository extends CrudRepository<Hero> {
+
     List<Hero> findByNombre(String nombre);
+
 }
