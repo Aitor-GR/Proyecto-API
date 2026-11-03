@@ -8,4 +8,4 @@ services:
       MYSQL_USER: usuario
       MYSQL_PASSWORD: usuario1234
     ports:
-      - "3306:3306"
+      - "3307:3306"
