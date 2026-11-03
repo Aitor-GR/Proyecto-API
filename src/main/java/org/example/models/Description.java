@@ -1,17 +1,9 @@
 package org.example.models;
 
 public class Description{
-	private String lore;
 	private String role;
+	private String lore;
 	private String playstyle;
-
-	public void setLore(String lore){
-		this.lore = lore;
-	}
-
-	public String getLore(){
-		return lore;
-	}
 
 	public void setRole(String role){
 		this.role = role;
@@ -19,6 +11,14 @@ public class Description{
 
 	public String getRole(){
 		return role;
+	}
+
+	public void setLore(String lore){
+		this.lore = lore;
+	}
+
+	public String getLore(){
+		return lore;
 	}
 
 	public void setPlaystyle(String playstyle){
@@ -33,8 +33,8 @@ public class Description{
  	public String toString(){
 		return 
 			"Description{" + 
-			"lore = '" + lore + '\'' + 
-			",role = '" + role + '\'' + 
+			"role = '" + role + '\'' + 
+			",lore = '" + lore + '\'' + 
 			",playstyle = '" + playstyle + '\'' + 
 			"}";
 		}
