@@ -114,4 +114,18 @@ public class HeroService {
                 .filter(Hero::isPlayerSelectable)
                 .toList();
     }
+
+
+    public Map<String, Long> contarHeroesPorTipo() {
+
+        return heroes.stream()
+                .collect(
+                        Collectors.groupingBy(
+                                hero -> hero.getHeroType() == null
+                                        ? "Sin tipo"
+                                        : hero.getHeroType(),
+                                Collectors.counting()
+                        )
+                );
+    }
 }
