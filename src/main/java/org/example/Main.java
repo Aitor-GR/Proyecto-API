@@ -1,107 +1,36 @@
 package org.example;
 
-import org.example.mapper.JsonMapper;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import org.example.models.Hero;
 import org.example.repository.HeroRepository;
 import org.example.repository.HeroRepositoryImpl;
-import org.example.service.HeroService;
+import org.example.controller.HeroCardsViewController;
 
 import java.util.List;
 
-public class Main {
+public class Main extends Application {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
+        launch(args);
+    }
 
-        JsonMapper mapper = new JsonMapper();
+    @Override
+    public void start(Stage stage) throws Exception {
+        HeroRepository heroRepository = new HeroRepositoryImpl();
+        List<Hero> heroes = heroRepository.findAll();
 
-        List<Hero> heroes =
-                mapper.readHeroes(
-                        "data/response.json"
-                );
+        FXMLLoader loader = new FXMLLoader(
+                Main.class.getResource("/org/example/HeroCardsView.fxml"));
+        Parent view = loader.load();
+        HeroCardsViewController controller = loader.getController();
+        controller.setHeroes(heroes);
 
-
-        HeroService service =
-                new HeroService(heroes);
-
-        HeroRepository repository = new HeroRepositoryImpl();
-
-
-        /*System.out.println("==============================");
-        System.out.println("   DEADLOCK HERO ANALYZER");
-        System.out.println("==============================");
-
-
-        System.out.println("\nTotal héroes:");
-        System.out.println(service.contarHeroes());
-
-
-        System.out.println("\n=== PRIMER HÉROE ===");
-        System.out.println(
-                service.primerHeroe()
-        );
-
-
-        System.out.println("\n=== BUSCAR POR NOMBRE ===");
-        service.buscarPorNombre("Abrams")
-                .forEach(System.out::println);
-
-
-        System.out.println("\n=== NOMBRES DE HÉROES ===");
-        service.obtenerNombres()
-                .forEach(System.out::println);
-
-
-        System.out.println("\n=== HÉROES ORDENADOS POR NOMBRE ===");
-        service.ordenarPorNombre()
-                .forEach(hero ->
-                        System.out.println(hero.getName())
-                );
-
-
-        System.out.println("\n=== HÉROES CON TAG TANK ===");
-        service.buscarPorTag("Tank")
-                .forEach(hero ->
-                        System.out.println(hero.getName())
-                );
-
-
-        System.out.println("\n=== HÉROES JUGABLES ===");
-        service.obtenerHeroesJugables()
-                .forEach(hero ->
-                        System.out.println(hero.getName())
-                );
-
-
-        System.out.println("\n=== TODOS LOS TAGS ===");
-        service.obtenerTodosLosTags()
-                .forEach(System.out::println);
-
-
-        System.out.println("\n=== HÉROES AGRUPADOS POR TIPO ===");
-
-        service.agruparPorTipo()
-                .forEach((tipo, listaHeroes) -> {
-
-                    System.out.println("\nTipo: " + tipo);
-
-                    listaHeroes.forEach(hero ->
-                            System.out.println(
-                                    " - " + hero.getName()
-                            )
-                    );
-                });
-
-
-        System.out.println("\n=== CANTIDAD DE HÉROES POR TIPO ===");
-
-        service.contarHeroesPorTipo()
-                .forEach((tipo, cantidad) ->
-                        System.out.println(
-                                tipo + ": " + cantidad
-                        )
-                );*/
-
-        repository.findAll()
-                .forEach(System.out::println);
+        stage.setTitle("Heroes");
+        stage.setScene(new Scene(view, 900, 600));
+        stage.show();
     }
 }
