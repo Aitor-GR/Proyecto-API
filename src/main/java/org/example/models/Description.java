@@ -1,6 +1,13 @@
 package org.example.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Description{
+
+	public Description() {
+	}
+
 	private String role;
 	private String lore;
 	private String playstyle;
@@ -30,12 +37,11 @@ public class Description{
 	}
 
 	@Override
- 	public String toString(){
-		return 
-			"Description{" + 
-			"role = '" + role + '\'' + 
-			",lore = '" + lore + '\'' + 
-			",playstyle = '" + playstyle + '\'' + 
-			"}";
-		}
+	public String toString() {
+		return "Description{" +
+				"role='" + role + '\'' +
+				", lore='" + lore + '\'' +
+				", playstyle='" + playstyle + '\'' +
+				'}';
+	}
 }
