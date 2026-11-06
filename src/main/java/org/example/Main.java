@@ -2,6 +2,8 @@ package org.example;
 
 import org.example.mapper.JsonMapper;
 import org.example.models.Hero;
+import org.example.repository.HeroRepository;
+import org.example.repository.HeroRepositoryImpl;
 import org.example.service.HeroService;
 
 import java.util.List;
@@ -21,8 +23,10 @@ public class Main {
         HeroService service =
                 new HeroService(heroes);
 
+        HeroRepository repository = new HeroRepositoryImpl();
 
-        System.out.println("==============================");
+
+        /*System.out.println("==============================");
         System.out.println("   DEADLOCK HERO ANALYZER");
         System.out.println("==============================");
 
@@ -95,6 +99,9 @@ public class Main {
                         System.out.println(
                                 tipo + ": " + cantidad
                         )
-                );
+                );*/
+
+        repository.findAll()
+                .forEach(System.out::println);
     }
 }
