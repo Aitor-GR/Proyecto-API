@@ -1,37 +1,36 @@
 package org.example;
 
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import org.example.models.Hero;
 import org.example.repository.HeroRepository;
 import org.example.repository.HeroRepositoryImpl;
+import org.example.controller.HeroCardsViewController;
 
 import java.util.List;
 
-public class Main {
+public class Main extends Application {
 
     public static void main(String[] args) {
+        launch(args);
+    }
 
+    @Override
+    public void start(Stage stage) throws Exception {
         HeroRepository heroRepository = new HeroRepositoryImpl();
-
         List<Hero> heroes = heroRepository.findAll();
 
-        for (Hero hero : heroes) {
+        FXMLLoader loader = new FXMLLoader(
+                Main.class.getResource("/org/example/HeroCardsView.fxml"));
+        Parent view = loader.load();
+        HeroCardsViewController controller = loader.getController();
+        controller.setHeroes(heroes);
 
-            System.out.println("------------------------");
-            System.out.println("ID: " + hero.getId());
-            System.out.println("Nombre: " + hero.getName());
-            System.out.println("Tipo: " + hero.getHeroType());
-            System.out.println("Clase: " + hero.getClassName());
-
-            if (hero.getDescription() != null) {
-                System.out.println("Rol: "
-                        + hero.getDescription().getRole());
-
-                System.out.println("Playstyle: "
-                        + hero.getDescription().getPlaystyle());
-            }
-
-            System.out.println("Tags: "
-                    + hero.getTags());
-        }
+        stage.setTitle("Heroes");
+        stage.setScene(new Scene(view, 900, 600));
+        stage.show();
     }
 }
