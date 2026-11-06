@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.TilePane?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.HeroCardsViewController" fitToWidth="true" style="-fx-background-color: transparent;">
+    <content>
+        <TilePane fx:id="cardsPane" hgap="16.0" vgap="16.0" prefColumns="3">
+            <padding>
+                <Insets top="16.0" right="16.0" bottom="16.0" left="16.0"/>
+            </padding>
+        </TilePane>
+    </content>
+</ScrollPane>
