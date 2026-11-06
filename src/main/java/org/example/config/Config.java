@@ -3,6 +3,7 @@ package org.example.config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -20,8 +21,10 @@ public class Config {
         try {
             logger.debug("Cargando configuración");
             Properties properties = new Properties();
-            InputStream input = ClassLoader.getSystemResourceAsStream("config.properties");
-            if (input != null) {
+            try (InputStream input = Config.class.getClassLoader().getResourceAsStream("config.properties")) {
+                if (input == null) {
+                    throw new IOException("Recurso 'config.properties' no encontrado");
+                }
                 properties.load(input);
                 databaseUrl = properties.getProperty("database.url", databaseUrl);
                 databaseInitTables = Boolean.parseBoolean(properties.getProperty("database.init.tables", String.valueOf(databaseInitTables)));
@@ -30,12 +33,9 @@ public class Config {
                 databaseUser = properties.getProperty("database.user", databaseUser);
                 databasePassword = properties.getProperty("database.password", databasePassword);
                 logger.debug("Configuración cargada correctamente");
-            } else {
-                logger.error("Archivo de configuración 'config.properties' no encontrado");
-                logger.error("Usando valores por defecto");
             }
         } catch (Exception e) {
-            logger.error("Error cargando configuración: " + e.getMessage());
+            logger.error("Error cargando configuración: {}", e.getMessage());
             logger.error("Usando valores por defecto");
         }
     }
