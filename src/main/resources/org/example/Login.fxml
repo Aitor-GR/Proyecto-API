@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.controller.LoginController" alignment="CENTER" spacing="12.0"
+      prefWidth="360.0" prefHeight="320.0">
+    <padding>
+        <Insets top="32.0" right="40.0" bottom="32.0" left="40.0"/>
+    </padding>
+    <Label text="Iniciar sesión" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+    <TextField fx:id="usernameField" promptText="Usuario" maxWidth="280.0"/>
+    <PasswordField fx:id="passwordField" promptText="Contraseña" maxWidth="280.0" onAction="#login"/>
+    <PasswordField fx:id="confirmPasswordField" promptText="Repite la contraseña"
+                   maxWidth="280.0" visible="false" managed="false"/>
+    <Button fx:id="loginButton" text="Entrar" onAction="#login" defaultButton="true" maxWidth="280.0"/>
+    <Button fx:id="registerButton" text="Registrarse" onAction="#register" maxWidth="280.0"/>
+    <Button fx:id="backButton" text="Volver a iniciar sesión" onAction="#backToLogin"
+            visible="false" managed="false" maxWidth="280.0"/>
+</VBox>
