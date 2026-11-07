@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
@@ -29,6 +30,9 @@ public class HeroCardsViewController {
     private TextField searchField;
 
     @FXML
+    private ComboBox<String> searchFieldSelector;
+
+    @FXML
     private Button exportButton;
 
     @FXML
@@ -40,7 +44,18 @@ public class HeroCardsViewController {
 
     @FXML
     private void initialize() {
+        searchFieldSelector.getItems().addAll(
+                "Todos",
+                "Nombre",
+                "Nombre interno",
+                "Tipo",
+                "Clase",
+                "Tags"
+        );
+        searchFieldSelector.getSelectionModel().selectFirst();
         searchField.textProperty().addListener((observable, oldValue, newValue) -> renderCards(newValue));
+        searchFieldSelector.valueProperty()
+                .addListener((observable, oldValue, newValue) -> renderCards(searchField.getText()));
     }
 
     public List<Hero> getHeroes() {
@@ -58,7 +73,7 @@ public class HeroCardsViewController {
 
         for (Hero hero : this.heroes) {
             Hero nonNullHero = Objects.requireNonNull(hero, "heroes must not contain null elements");
-            if (matchesSearch(nonNullHero, searchText)) {
+            if (matchesSearch(nonNullHero, searchText, searchFieldSelector.getValue())) {
                 cardsPane.getChildren().add(createCard(nonNullHero));
             }
         }
@@ -125,18 +140,26 @@ public class HeroCardsViewController {
         alert.showAndWait();
     }
 
-    private boolean matchesSearch(Hero hero, String searchText) {
+    private boolean matchesSearch(Hero hero, String searchText, String selectedField) {
         if (searchText == null || searchText.isBlank()) {
             return true;
         }
 
         String normalizedSearch = searchText.toLowerCase(Locale.ROOT).trim();
-        return contains(hero.getName(), normalizedSearch)
-                || contains(hero.getSearchName(), normalizedSearch)
-                || contains(hero.getHeroType(), normalizedSearch)
-                || contains(hero.getClassName(), normalizedSearch)
-                || (hero.getTags() != null
-                && hero.getTags().stream().anyMatch(tag -> contains(tag, normalizedSearch)));
+        return switch (selectedField) {
+            case "Nombre" -> contains(hero.getName(), normalizedSearch);
+            case "Nombre interno" -> contains(hero.getSearchName(), normalizedSearch);
+            case "Tipo" -> contains(hero.getHeroType(), normalizedSearch);
+            case "Clase" -> contains(hero.getClassName(), normalizedSearch);
+            case "Tags" -> hero.getTags() != null
+                    && hero.getTags().stream().anyMatch(tag -> contains(tag, normalizedSearch));
+            default -> contains(hero.getName(), normalizedSearch)
+                    || contains(hero.getSearchName(), normalizedSearch)
+                    || contains(hero.getHeroType(), normalizedSearch)
+                    || contains(hero.getClassName(), normalizedSearch)
+                    || (hero.getTags() != null
+                    && hero.getTags().stream().anyMatch(tag -> contains(tag, normalizedSearch)));
+        };
     }
 
     private boolean contains(String value, String searchText) {
