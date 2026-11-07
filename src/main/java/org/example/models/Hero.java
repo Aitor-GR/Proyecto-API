@@ -1,6 +1,7 @@
 package org.example.models;
 
 import java.util.List;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -25,6 +26,7 @@ public class Hero {
 	private boolean needsTesting;
 	private String className;
 	private String hideoutRichPresence;
+	private Map<String, String> images;
 
 	public void setAssignedPlayersOnly(boolean assignedPlayersOnly){
 		this.assignedPlayersOnly = assignedPlayersOnly;
@@ -152,6 +154,14 @@ public class Hero {
 
 	public String getHideoutRichPresence(){
 		return hideoutRichPresence;
+	}
+
+	public void setImages(Map<String, String> images){
+		this.images = images;
+	}
+
+	public Map<String, String> getImages(){
+		return images;
 	}
 
 	@Override

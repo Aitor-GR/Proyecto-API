@@ -2,12 +2,18 @@ package org.example.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import org.example.models.Description;
 import org.example.models.Hero;
 
+import java.util.Map;
 import java.util.List;
 
 public class HeroCardController {
+
+    @FXML
+    private ImageView heroImageView;
 
     @FXML
     private Label nameLabel;
@@ -25,6 +31,7 @@ public class HeroCardController {
     private Label tagsLabel;
 
     public void setHero(Hero hero) {
+        setHeroImage(hero.getImages());
         nameLabel.setText(valueOrDefault(hero.getName(), "Hero #" + hero.getId()));
         typeLabel.setText(joinValues(hero.getHeroType(), hero.getClassName()));
 
@@ -32,6 +39,24 @@ public class HeroCardController {
         setDetail(roleLabel, "Rol", description == null ? null : description.getRole());
         setDetail(playstyleLabel, "Estilo", description == null ? null : description.getPlaystyle());
         setDetail(tagsLabel, "Tags", joinTags(hero.getTags()));
+    }
+
+    private void setHeroImage(Map<String, String> images) {
+        String imageUrl = images == null ? null : images.get("icon_hero_card");
+        if (imageUrl == null || imageUrl.isBlank()) {
+            imageUrl = images == null ? null : images.get("icon_image_small");
+        }
+
+        if (imageUrl == null || imageUrl.isBlank()) {
+            heroImageView.setImage(null);
+            heroImageView.setVisible(false);
+            heroImageView.setManaged(false);
+            return;
+        }
+
+        heroImageView.setImage(new Image(imageUrl, true));
+        heroImageView.setVisible(true);
+        heroImageView.setManaged(true);
     }
 
     private void setDetail(Label label, String title, String value) {

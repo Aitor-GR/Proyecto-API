@@ -3,6 +3,7 @@ module Proyecto.API.Deadlock {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
+    requires java.net.http;
     requires org.slf4j;
     requires com.fasterxml.jackson.databind;
 
