@@ -6,6 +6,18 @@ CREATE DATABASE deadlock
 USE deadlock;
 
 -- =====================================
+-- USUARIOS
+-- =====================================
+CREATE TABLE users (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    password_salt VARCHAR(64) NOT NULL,
+    password_hash VARCHAR(64) NOT NULL
+
+);
+
+-- =====================================
 -- TABLA HEROES
 -- =====================================
 CREATE TABLE heroes (
