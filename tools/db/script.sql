@@ -28,7 +28,8 @@ CREATE TABLE heroes (
                         player_selectable BOOLEAN NOT NULL DEFAULT TRUE,
                         needs_testing BOOLEAN NOT NULL DEFAULT FALSE,
 
-                        hideout_rich_presence VARCHAR(255)
+                        hideout_rich_presence VARCHAR(255),
+                        images JSON
 
 );
 

@@ -4,6 +4,9 @@ import org.example.database.DatabaseManager;
 import org.example.database.DatabaseService;
 import org.example.models.Description;
 import org.example.models.Hero;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 import java.util.Map;
@@ -15,6 +18,7 @@ public class HeroRepositoryImpl implements HeroRepository {
 
     private final DescriptionRepository descriptionRepository;
     private final HeroTagRepository heroTagRepository;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public HeroRepositoryImpl() {
 
@@ -91,11 +95,12 @@ public class HeroRepositoryImpl implements HeroRepository {
                     disabled,
                     player_selectable,
                     needs_testing,
-                    hideout_rich_presence
+                    hideout_rich_presence,
+                    images
                 )
                 VALUES
                 (
-                    ?,?,?,?,?,?,?,?,?,?,?,?,?,?
+                    ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
                 )
                 """;
 
@@ -116,7 +121,8 @@ public class HeroRepositoryImpl implements HeroRepository {
                 hero.isDisabled(),
                 hero.isPlayerSelectable(),
                 hero.isNeedsTesting(),
-                hero.getHideoutRichPresence()
+                hero.getHideoutRichPresence(),
+                serializeImages(hero)
 
         );
 
@@ -159,7 +165,8 @@ public class HeroRepositoryImpl implements HeroRepository {
                     disabled=?,
                     player_selectable=?,
                     needs_testing=?,
-                    hideout_rich_presence=?
+                    hideout_rich_presence=?,
+                    images=?
                 WHERE id=?
                 """;
 
@@ -180,6 +187,7 @@ public class HeroRepositoryImpl implements HeroRepository {
                 hero.isPlayerSelectable(),
                 hero.isNeedsTesting(),
                 hero.getHideoutRichPresence(),
+                serializeImages(hero),
                 id
 
         );
@@ -189,11 +197,11 @@ public class HeroRepositoryImpl implements HeroRepository {
         }
 
         if (hero.getDescription() != null) {
-
-            descriptionRepository.update(
-                    id,
-                    hero.getDescription()
-            );
+            if (descriptionRepository.findByHeroId(id) == null) {
+                descriptionRepository.save(id, hero.getDescription());
+            } else {
+                descriptionRepository.update(id, hero.getDescription());
+            }
 
         }
 
@@ -269,6 +277,7 @@ public class HeroRepositoryImpl implements HeroRepository {
         hero.setHideoutRichPresence(
                 (String) entity.get("hideout_rich_presence")
         );
+        hero.setImages(deserializeImages(entity.get("images")));
 
         Description description =
                 descriptionRepository.findByHeroId(hero.getId());
@@ -280,6 +289,34 @@ public class HeroRepositoryImpl implements HeroRepository {
         );
 
         return hero;
+    }
+
+    private String serializeImages(Hero hero) {
+        if (hero.getImages() == null) {
+            return null;
+        }
+
+        try {
+            return objectMapper.writeValueAsString(hero.getImages());
+        } catch (JsonProcessingException e) {
+            throw new IllegalArgumentException("No se pudieron serializar las imágenes del héroe " + hero.getId(), e);
+        }
+    }
+
+    private Map<String, String> deserializeImages(Object value) {
+        if (value == null) {
+            return null;
+        }
+
+        try {
+            return objectMapper.readValue(
+                    value.toString(),
+                    new TypeReference<>() {
+                    }
+            );
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException("No se pudieron leer las imágenes del héroe", e);
+        }
     }
 
 }
