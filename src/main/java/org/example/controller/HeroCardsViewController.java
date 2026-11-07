@@ -3,11 +3,19 @@ package org.example.controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.ButtonType;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.TilePane;
+import org.example.service.CsvExportService;
 import org.example.models.Hero;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,9 +28,13 @@ public class HeroCardsViewController {
     private TextField searchField;
 
     @FXML
+    private Button exportButton;
+
+    @FXML
     private TilePane cardsPane;
 
     private List<Hero> heroes = List.of();
+    private final CsvExportService csvExportService = new CsvExportService();
 
     @FXML
     private void initialize() {
@@ -48,6 +60,59 @@ public class HeroCardsViewController {
                 cardsPane.getChildren().add(createCard(nonNullHero));
             }
         }
+    }
+
+    @FXML
+    private void exportData() {
+        ChoiceDialog<String> formatDialog = new ChoiceDialog<>(
+                "CSV",
+                "CSV",
+                "JSON (No implementada aún)"
+        );
+        formatDialog.setTitle("Exportar datos");
+        formatDialog.setHeaderText("Selecciona el formato de exportación");
+        formatDialog.setContentText("Formato:");
+
+        formatDialog.showAndWait().ifPresent(format -> {
+            if (!"CSV".equals(format)) {
+                showInformation("JSON todavía no está implementado.");
+                return;
+            }
+
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Guardar héroes como CSV");
+            fileChooser.setInitialFileName("heroes.csv");
+            fileChooser.getExtensionFilters().add(
+                    new FileChooser.ExtensionFilter("Archivos CSV (*.csv)", "*.csv")
+            );
+
+            Window owner = exportButton.getScene().getWindow();
+            java.io.File selectedFile = fileChooser.showSaveDialog(owner);
+            if (selectedFile == null) {
+                return;
+            }
+
+            try {
+                csvExportService.exportHeroes(heroes, Path.of(selectedFile.toURI()));
+                showInformation("Los héroes se han exportado correctamente.");
+            } catch (IOException exception) {
+                showError("No se pudieron exportar los héroes.", exception);
+            }
+        });
+    }
+
+    private void showInformation(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, message, ButtonType.OK);
+        alert.setTitle("Exportar datos");
+        alert.setHeaderText(null);
+        alert.showAndWait();
+    }
+
+    private void showError(String message, IOException exception) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, message + "\n" + exception.getMessage(), ButtonType.OK);
+        alert.setTitle("Error de exportación");
+        alert.setHeaderText(null);
+        alert.showAndWait();
     }
 
     private boolean matchesSearch(Hero hero, String searchText) {

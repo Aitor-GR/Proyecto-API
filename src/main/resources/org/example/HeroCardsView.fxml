@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 
@@ -10,7 +12,10 @@
     <padding>
         <Insets top="16.0" right="16.0" bottom="16.0" left="16.0"/>
     </padding>
-    <TextField fx:id="searchField" promptText="Buscar héroe..." maxWidth="Infinity"/>
+    <HBox spacing="8.0">
+        <TextField fx:id="searchField" promptText="Buscar héroe..." HBox.hgrow="ALWAYS"/>
+        <Button fx:id="exportButton" text="Exportar" onAction="#exportData"/>
+    </HBox>
     <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent;">
         <content>
             <TilePane fx:id="cardsPane" hgap="16.0" vgap="16.0" prefColumns="3">
