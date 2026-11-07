@@ -11,8 +11,8 @@ public class Config {
     private static final Logger logger = LoggerFactory.getLogger(Config.class.getName());
     // Valores por defecto
     private static String databaseUrl = "jdbc:mysql://localhost:3307/deadlock";
-    private static boolean databaseInitTables = true;
-    private static boolean databaseInitData = true;
+    private static boolean databaseInitTables = false;
+    private static boolean databaseInitData = false;
     private static String storageData = "data";
     private static String databaseUser = "root";
     private static String databasePassword = "abc123";

@@ -1,0 +1,59 @@
+package org.example.service;
+
+import org.example.models.Description;
+import org.example.models.Hero;
+import org.example.utils.CsvUtils;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+
+public class CsvExportService {
+
+    private static final List<String> HEADERS = List.of(
+            "id", "name", "searchName", "gender", "className", "heroType",
+            "gunTag", "developmentState", "assignedPlayersOnly",
+            "inDevelopment", "disabled", "playerSelectable", "needsTesting",
+            "hideoutRichPresence", "tags", "descriptionRole",
+            "descriptionLore", "descriptionPlaystyle"
+    );
+
+    public void exportHeroes(List<Hero> heroes, Path destination) throws IOException {
+        Objects.requireNonNull(heroes, "heroes must not be null");
+        Objects.requireNonNull(destination, "destination must not be null");
+
+        List<String> rows = new ArrayList<>(heroes.size() + 1);
+        rows.add(CsvUtils.toRow(HEADERS));
+        for (Hero hero : heroes) {
+            rows.add(toRow(Objects.requireNonNull(hero, "heroes must not contain null elements")));
+        }
+        CsvUtils.write(destination, rows);
+    }
+
+    private String toRow(Hero hero) {
+        Description description = hero.getDescription();
+        return CsvUtils.toRow(Arrays.asList(
+                hero.getId(),
+                hero.getName(),
+                hero.getSearchName(),
+                hero.getGender(),
+                hero.getClassName(),
+                hero.getHeroType(),
+                hero.getGunTag(),
+                hero.getDevelopmentState(),
+                hero.isAssignedPlayersOnly(),
+                hero.isInDevelopment(),
+                hero.isDisabled(),
+                hero.isPlayerSelectable(),
+                hero.isNeedsTesting(),
+                hero.getHideoutRichPresence(),
+                hero.getTags() == null ? null : String.join("; ", hero.getTags()),
+                description == null ? null : description.getRole(),
+                description == null ? null : description.getLore(),
+                description == null ? null : description.getPlaystyle()
+        ));
+    }
+}

@@ -1,8 +1,14 @@
 package org.example.models;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Hero {
+
+	public Hero() {
+	}
+
 	private boolean assignedPlayersOnly;
 	private String gender;
 	private Description description;
@@ -149,25 +155,14 @@ public class Hero {
 	}
 
 	@Override
- 	public String toString(){
-		return 
-			"ResponseItem{" + 
-			"assigned_players_only = '" + assignedPlayersOnly + '\'' + 
-			",gender = '" + gender + '\'' + 
-			",description = '" + description + '\'' + 
-			",development_state = '" + developmentState + '\'' + 
-			",in_development = '" + inDevelopment + '\'' + 
-			",tags = '" + tags + '\'' + 
-			",name = '" + name + '\'' + 
-			",gun_tag = '" + gunTag + '\'' + 
-			",disabled = '" + disabled + '\'' + 
-			",hero_type = '" + heroType + '\'' + 
-			",id = '" + id + '\'' + 
-			",player_selectable = '" + playerSelectable + '\'' + 
-			",search_name = '" + searchName + '\'' + 
-			",needs_testing = '" + needsTesting + '\'' + 
-			",class_name = '" + className + '\'' + 
-			",hideout_rich_presence = '" + hideoutRichPresence + '\'' + 
-			"}";
-		}
+	public String toString() {
+		return "Hero{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", heroType='" + heroType + '\'' +
+				", className='" + className + '\'' +
+				", gender='" + gender + '\'' +
+				", tags=" + tags +
+				'}';
+	}
 }
