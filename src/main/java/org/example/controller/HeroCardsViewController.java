@@ -12,6 +12,7 @@ import javafx.stage.Window;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.TilePane;
 import org.example.service.CsvExportService;
+import org.example.service.JsonExportService;
 import org.example.models.Hero;
 
 import java.io.IOException;
@@ -35,6 +36,7 @@ public class HeroCardsViewController {
 
     private List<Hero> heroes = List.of();
     private final CsvExportService csvExportService = new CsvExportService();
+    private final JsonExportService jsonExportService = new JsonExportService();
 
     @FXML
     private void initialize() {
@@ -67,24 +69,27 @@ public class HeroCardsViewController {
         ChoiceDialog<String> formatDialog = new ChoiceDialog<>(
                 "CSV",
                 "CSV",
-                "JSON (No implementada aún)"
+                "JSON"
         );
         formatDialog.setTitle("Exportar datos");
         formatDialog.setHeaderText("Selecciona el formato de exportación");
         formatDialog.setContentText("Formato:");
 
         formatDialog.showAndWait().ifPresent(format -> {
-            if (!"CSV".equals(format)) {
-                showInformation("JSON todavía no está implementado.");
-                return;
-            }
-
             FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Guardar héroes como CSV");
-            fileChooser.setInitialFileName("heroes.csv");
-            fileChooser.getExtensionFilters().add(
-                    new FileChooser.ExtensionFilter("Archivos CSV (*.csv)", "*.csv")
-            );
+            if ("CSV".equals(format)) {
+                fileChooser.setTitle("Guardar héroes como CSV");
+                fileChooser.setInitialFileName("heroes.csv");
+                fileChooser.getExtensionFilters().add(
+                        new FileChooser.ExtensionFilter("Archivos CSV (*.csv)", "*.csv")
+                );
+            } else {
+                fileChooser.setTitle("Guardar héroes como JSON");
+                fileChooser.setInitialFileName("heroes.json");
+                fileChooser.getExtensionFilters().add(
+                        new FileChooser.ExtensionFilter("Archivos JSON (*.json)", "*.json")
+                );
+            }
 
             Window owner = exportButton.getScene().getWindow();
             java.io.File selectedFile = fileChooser.showSaveDialog(owner);
@@ -93,7 +98,12 @@ public class HeroCardsViewController {
             }
 
             try {
-                csvExportService.exportHeroes(heroes, Path.of(selectedFile.toURI()));
+                Path destination = Path.of(selectedFile.toURI());
+                if ("CSV".equals(format)) {
+                    csvExportService.exportHeroes(heroes, destination);
+                } else {
+                    jsonExportService.exportHeroes(heroes, destination);
+                }
                 showInformation("Los héroes se han exportado correctamente.");
             } catch (IOException exception) {
                 showError("No se pudieron exportar los héroes.", exception);
