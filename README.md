@@ -9,8 +9,8 @@ una base de datos MySQL.
 
 El supuesto consiste en desarrollar una aplicación de escritorio que permita
 consultar información estructurada de los héroes de Deadlock. Al iniciar la
-aplicación, el usuario debe autenticarse. Después, se consulta la API externa,
-se sincronizan los héroes con MySQL y se muestran en tarjetas.
+aplicación, el usuario debe autenticarse. De forma asíncrona, se consulta la API externa,
+se sincronizan los héroes con MySQL y posteriormente cuando se complete el login se muestran en tarjetas.
 
 Las funcionalidades principales son:
 
@@ -159,7 +159,7 @@ erDiagram
    database.password=abc123
    ```
 
-4. Para una instalación inicial, las tablas deberian crearse automáticamente y los datos deberían obtenerse directamente de la API. Si no es así, ejecutar
+4. Para una instalación inicial, las tablas deberian crearse automáticamente y los datos deberían obtenerse directamente de la API. De no es así, ejecutar
    [`tools/db/script.sql`](tools/db/script.sql) en MySQL Workbench o desde la
    línea de comandos.
 
@@ -318,19 +318,27 @@ lógica de negocio, el acceso a datos y los modelos:
 
 ![PO5 - Usuario duplicado](docs/PO5UsuarioDuplicado.png)
 
-#### PO6 - Búsqueda de héroes
+#### PO6 - Campos vacíos
 
-![PO6 - Búsqueda de héroes](docs/PO6BuscarHeroe.png)
+![PO6 - Campos vacíos](docs/PO6CamposVacios.png)
 
-#### PO7 - Exportación CSV
+#### PO7 - Búsqueda de héroes
 
-![PO7-1 - Exportación CSV](docs/PO7-1ExportarCSV.png)
+![PO7 - Búsqueda de héroes](docs/PO7BuscarHeroe.png)
 
-![PO7-2 - Exportación CSV](docs/PO7-2ExportarCSV.png)
+#### PO8 - Sin resultados de búsqueda
 
-#### PO8 - Exportación JSON
+![PO8 - Sin resultados de búsqueda](docs/PO8SinResultados.png)
 
-![PO8-1 - Exportación JSON](docs/PO8-1ExportarJSON.png)
+#### PO9 - Exportación CSV
 
-![PO8-2 - Exportación JSON](docs/PO8-2ExportarJSON.png)
+![PO9-1 - Exportación CSV](docs/PO9-1ExportarCSV.png)
+
+![PO9-2 - Exportación CSV](docs/PO9-2ExportarCSV.png)
+
+#### PO10 - Exportación JSON
+
+![PO10-1 - Exportación JSON](docs/PO10-1ExportarJSON.png)
+
+![PO10-2 - Exportación JSON](docs/PO10-2ExportarJSON.png)
 
