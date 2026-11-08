@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class HeroCardsViewController {
 
@@ -41,6 +42,8 @@ public class HeroCardsViewController {
     private List<Hero> heroes = List.of();
     private final CsvExportService csvExportService = new CsvExportService();
     private final JsonExportService jsonExportService = new JsonExportService();
+    private Consumer<Void> onOpenDle = ignored -> {
+    };
 
     @FXML
     private void initialize() {
@@ -66,6 +69,15 @@ public class HeroCardsViewController {
         Objects.requireNonNull(heroes, "heroes must not be null");
         this.heroes = Collections.unmodifiableList(new ArrayList<>(heroes));
         renderCards(searchField.getText());
+    }
+
+    public void setOnOpenDle(Runnable onOpenDle) {
+        this.onOpenDle = ignored -> onOpenDle.run();
+    }
+
+    @FXML
+    private void openDle() {
+        onOpenDle.accept(null);
     }
 
     private void renderCards(String searchText) {
