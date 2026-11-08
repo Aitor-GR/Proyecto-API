@@ -298,49 +298,53 @@ lógica de negocio, el acceso a datos y los modelos:
 
 ### Capturas de usuario
 
-#### PO1 - Login correcto
+#### P01 - Login correcto
 
-![PO1 - Login correcto](docs/PO1LoginCorrecto.png)
+![P01 - Login correcto](docs/P01LoginCorrecto.png)
 
-#### PO2 - Contraseña incorrecta
+#### P02 - Contraseña incorrecta
 
-![PO2 - Contraseña incorrecta](docs/PO2ContraseñaIncorrecta.png)
+![P02 - Contraseña incorrecta](docs/P02ContraseñaIncorrecta.png)
 
-#### PO3 - Registro de usuario
+#### P03 - Registro de usuario
 
-![PO3 - Registro de usuario](docs/PO3RegistroUsuario.png)
+![P03 - Registro de usuario](docs/P03RegistroUsuario.png)
 
-#### PO4 - Contraseñas distintas
+#### P04 - Contraseñas distintas
 
-![PO4 - Contraseñas distintas](docs/PO4ContraseñasDistintas.png)
+![P04 - Contraseñas distintas](docs/P04ContraseñasDistintas.png)
 
-#### PO5 - Usuario duplicado
+#### P05 - Usuario duplicado
 
-![PO5 - Usuario duplicado](docs/PO5UsuarioDuplicado.png)
+![P05 - Usuario duplicado](docs/P05UsuarioDuplicado.png)
 
-#### PO6 - Campos vacíos
+#### P06 - Campos vacíos
 
-![PO6 - Campos vacíos](docs/PO6CamposVacios.png)
+![P06 - Campos vacíos](docs/P06CamposVacios.png)
 
-#### PO7 - Búsqueda de héroes
+#### P07 - Búsqueda de héroes
 
-![PO7 - Búsqueda de héroes](docs/PO7BuscarHeroe.png)
+![P07 - Búsqueda de héroes](docs/P07BuscarHeroe.png)
 
-#### PO8 - Sin resultados de búsqueda
+#### P08 - Sin resultados de búsqueda
 
-![PO8 - Sin resultados de búsqueda](docs/PO8SinResultados.png)
+![P08 - Sin resultados de búsqueda](docs/P08SinResultados.png)
 
-#### PO9 - Exportación CSV
+#### P09 - Exportación CSV
 
-![PO9-1 - Exportación CSV](docs/PO9-1ExportarCSV.png)
+![P09-1 - Exportación CSV](docs/P09-1ExportarCSV.png)
 
-![PO9-2 - Exportación CSV](docs/PO9-2ExportarCSV.png)
+![P09-2 - Exportación CSV](docs/P09-2ExportarCSV.png)
 
-#### PO10 - Exportación JSON
+#### P10 - Exportación JSON
 
-![PO10-1 - Exportación JSON](docs/PO10-1ExportarJSON.png)
+![P10-1 - Exportación JSON](docs/P10-1ExportarJSON.png)
 
-![PO10-2 - Exportación JSON](docs/PO10-2ExportarJSON.png)
+![P10-2 - Exportación JSON](docs/P10-2ExportarJSON.png)
+
+#### P11 - Sin API disponible
+
+![P11 - Sin API disponible](docs/P11SinAPI.png)
 
 ## 5. Reparto de tareas entre los integrantes
 
