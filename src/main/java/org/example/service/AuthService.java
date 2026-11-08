@@ -21,6 +21,7 @@ public class AuthService {
 
     private final DatabaseManager database;
     private final SecureRandom secureRandom = new SecureRandom();
+    private String authenticatedUsername;
 
     public enum RegistrationResult {
         CREATED,
@@ -38,6 +39,7 @@ public class AuthService {
     }
 
     public boolean authenticate(String username, String password) {
+        authenticatedUsername = null;
         if (username == null || username.isBlank() || password == null || password.isEmpty()) {
             return false;
         }
@@ -60,10 +62,17 @@ public class AuthService {
         try {
             byte[] calculatedHash = hashPassword(password.toCharArray(), decode(saltValue));
             byte[] expectedHash = decode(hashValue);
-            return MessageDigest.isEqual(calculatedHash, expectedHash);
+            boolean authenticated = MessageDigest.isEqual(calculatedHash, expectedHash);
+            authenticatedUsername = authenticated ? username.trim() : null;
+            return authenticated;
         } catch (GeneralSecurityException | IllegalArgumentException exception) {
             return false;
         }
+
+    }
+
+    public String getAuthenticatedUsername() {
+        return authenticatedUsername;
     }
 
     public RegistrationResult register(String username, String password) {

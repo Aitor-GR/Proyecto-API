@@ -14,6 +14,7 @@
         <Insets top="16.0" right="16.0" bottom="16.0" left="16.0"/>
     </padding>
     <HBox spacing="8.0">
+        <Button text="DLE diario" onAction="#openDle"/>
         <ComboBox fx:id="searchFieldSelector" prefWidth="140.0"/>
         <TextField fx:id="searchField" promptText="Buscar héroe..." HBox.hgrow="ALWAYS"/>
         <Button fx:id="exportButton" text="Exportar" onAction="#exportData"/>

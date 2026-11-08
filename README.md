@@ -72,6 +72,7 @@ erDiagram
         VARCHAR password_salt
         VARCHAR password_hash
         INT dle_streak
+        DATE dle_last_date
     }
 
     HEROES {
@@ -114,15 +115,14 @@ erDiagram
     TAGS ||--o{ HERO_TAGS : "clasifica"
 ```
 
-![img.png](docs/DiagramER.png)
-
 ### Relaciones
 
 - `heroes` y `descriptions`: relación 1:0..1. Una descripción pertenece a un
   único héroe y se elimina en cascada al borrar el héroe.
 - `heroes` y `tags`: relación N:M mediante `hero_tags`.
 - `users` es independiente de los datos de héroes y contiene las credenciales
-  necesarias para acceder a la aplicación.
+  necesarias para acceder a la aplicación, además de `dle_streak` y
+  `dle_last_date`, que permiten conservar la racha diaria del DLE.
 
 ## 3. Manual técnico para desarrolladores
 
