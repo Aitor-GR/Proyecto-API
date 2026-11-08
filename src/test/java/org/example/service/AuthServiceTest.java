@@ -10,8 +10,10 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/** Pruebas del registro y la autenticación de usuarios. */
 class AuthServiceTest {
 
+    // Comprueba que se puede registrar un usuario e iniciar sesión con él.
     @Test
     void registerAndAuthenticateValidUser() {
         InMemoryDatabase database = new InMemoryDatabase();
@@ -23,6 +25,7 @@ class AuthServiceTest {
         assertEquals("alice", service.getAuthenticatedUsername());
     }
 
+    // Comprueba que se rechazan datos inválidos, duplicados y contraseñas incorrectas.
     @Test
     void rejectsInvalidAndDuplicateUsers() {
         InMemoryDatabase database = new InMemoryDatabase();
@@ -38,9 +41,11 @@ class AuthServiceTest {
         assertNull(service.getAuthenticatedUsername());
     }
 
+    // Simula las consultas necesarias sin conectarse a una base de datos real.
     private static final class InMemoryDatabase implements DatabaseManager {
         private final List<Map<String, Object>> users = new ArrayList<>();
 
+        // Devuelve los usuarios cuyo nombre coincide con el parámetro recibido.
         @Override
         public List<Map<String, Object>> select(String query, Object... params) {
             String username = (String) params[0];
@@ -50,6 +55,7 @@ class AuthServiceTest {
                     .toList();
         }
 
+        // Guarda un usuario simulado con su salt y su hash.
         @Override
         public int insert(String query, Object... params) {
             users.add(Map.of(
@@ -60,16 +66,19 @@ class AuthServiceTest {
             return 1;
         }
 
+        // Esta operación no se usa en estas pruebas.
         @Override
         public Object insertAndGetId(String query, Object... params) {
             throw new UnsupportedOperationException();
         }
 
+        // Esta operación no se usa en estas pruebas.
         @Override
         public int update(String query, Object... params) {
             throw new UnsupportedOperationException();
         }
 
+        // Esta operación no se usa en estas pruebas.
         @Override
         public int delete(String query, Object... params) {
             throw new UnsupportedOperationException();

@@ -8,8 +8,10 @@ import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/** Comprueba que JsonMapper transforma correctamente los datos JSON de héroes. */
 class JsonMapperTest {
 
+    // Verifica que se leen los nombres de campos de la API en snake_case.
     @Test
     void readsSnakeCaseHeroData(@TempDir Path tempDir) throws Exception {
         Path source = tempDir.resolve("heroes.json");

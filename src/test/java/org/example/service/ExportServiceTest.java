@@ -10,8 +10,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/** Comprueba las exportaciones de héroes a CSV y JSON. */
 class ExportServiceTest {
 
+    // Verifica la cabecera CSV, el escape de comas y la unión de etiquetas.
     @Test
     void exportsCsvWithHeaderAndEscapedValues(@TempDir Path tempDir) throws Exception {
         Hero hero = new Hero();
@@ -28,6 +30,7 @@ class ExportServiceTest {
         assertTrue(content.contains("Tank; Frontline"));
     }
 
+    // Comprueba la exportación JSON y el rechazo de elementos nulos.
     @Test
     void exportsJsonAndRejectsNullElements(@TempDir Path tempDir) throws Exception {
         Path destination = tempDir.resolve("heroes.json");

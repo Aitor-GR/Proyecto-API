@@ -8,8 +8,10 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/** Comprueba las búsquedas, filtros y agrupaciones de HeroService. */
 class HeroServiceTest {
 
+    // Comprueba varias operaciones de búsqueda, ordenación y filtrado.
     @Test
     void searchesSortsAndFiltersHeroes() {
         Hero zeus = hero("Zeus", "Mystic", List.of("Mage", "Flying"), true);
@@ -23,6 +25,7 @@ class HeroServiceTest {
         assertTrue(service.existeHeroe("ABADDON"));
     }
 
+    // Comprueba que se agrupan etiquetas y héroes aunque falte el tipo.
     @Test
     void aggregatesTagsAndTypesIncludingMissingType() {
         Hero first = hero("First", "Mystic", List.of("Mage", "Tank"), true);
@@ -35,6 +38,7 @@ class HeroServiceTest {
         assertEquals(List.of(first), service.buscarPorTag("TANK"));
     }
 
+    // Crea un héroe sencillo para reutilizarlo en las pruebas.
     private static Hero hero(String name, String type, List<String> tags, boolean playable) {
         Hero hero = new Hero();
         hero.setName(name);

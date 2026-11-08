@@ -12,8 +12,10 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/** Pruebas del cálculo de la racha diaria del juego DLE. */
 class DleServiceTest {
 
+    // Comprueba que una victoria seguida suma la racha y no se repite el mismo día.
     @Test
     void incrementsConsecutiveWinsAndDoesNotDuplicateSameDay() {
         FakeDatabase database = new FakeDatabase(2, Date.valueOf("2026-01-10"));
@@ -24,6 +26,7 @@ class DleServiceTest {
         assertEquals(1, database.updates);
     }
 
+    // Comprueba que la racha se reinicia tras un día perdido y que se detecta un usuario inexistente.
     @Test
     void resetsStreakAfterGapAndRejectsUnknownUser() {
         FakeDatabase database = new FakeDatabase(4, Date.valueOf("2026-01-01"));
@@ -35,17 +38,20 @@ class DleServiceTest {
                 () -> service.recordWin("alice", LocalDate.of(2026, 1, 5)));
     }
 
+    // Base de datos falsa que guarda el usuario y cuenta las actualizaciones.
     private static final class FakeDatabase implements DatabaseManager {
         private int streak;
         private Date lastDate;
         private int updates;
         private boolean userPresent = true;
 
+        // Crea la simulación con una racha y una fecha iniciales.
         private FakeDatabase(int streak, Date lastDate) {
             this.streak = streak;
             this.lastDate = lastDate;
         }
 
+        // Devuelve el estado del usuario simulado si está registrado.
         @Override
         public List<Map<String, Object>> select(String query, Object... params) {
             if (!userPresent) {
@@ -57,6 +63,7 @@ class DleServiceTest {
             return List.of(user);
         }
 
+        // Guarda la racha y la fecha que recibe el servicio.
         @Override
         public int update(String query, Object... params) {
             streak = (Integer) params[0];
@@ -65,12 +72,15 @@ class DleServiceTest {
             return 1;
         }
 
+        // Las operaciones siguientes no se necesitan para probar la racha.
         @Override
         public int insert(String query, Object... params) { return 0; }
 
+        // No se usa en estas pruebas.
         @Override
         public Object insertAndGetId(String query, Object... params) { return null; }
 
+        // No se usa en estas pruebas.
         @Override
         public int delete(String query, Object... params) { return 0; }
     }
