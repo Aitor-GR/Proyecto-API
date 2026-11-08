@@ -167,12 +167,18 @@ erDiagram
 5. Compilar y ejecutar:
 
    ```bash
-   mvn clean javafx:run
+   mvn clean package
    ```
 
-   Este comando compila el proyecto y añade automáticamente al
-   `module-path` las dependencias de JavaFX, SLF4J, Jackson, MySQL y el resto
-   de librerías necesarias. Desde un IDE también se puede ejecutar la clase
+   Maven crea el JAR ejecutable en
+   `target/Proyecto_API_Deadlock-1.0-SNAPSHOT.jar`, incluyendo las dependencias.
+   Para abrirlo, usa Java 25 y ejecuta:
+
+   ```bash
+   java -jar target/Proyecto_API_Deadlock-1.0-SNAPSHOT.jar
+   ```
+
+   También se puede iniciar desde IntelliJ ejecutando la clase
    `org.example.Main` con las dependencias de Maven configuradas.
 
 ### Arquitectura
