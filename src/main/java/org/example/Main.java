@@ -1,6 +1,7 @@
 package org.example;
 
 import javafx.application.Application;
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,6 +22,8 @@ public class Main extends Application {
 
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
+    private HeroCardsViewController heroCardsController;
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -32,6 +35,7 @@ public class Main extends Application {
         Parent loginView = loginLoader.load();
         LoginController loginController = loginLoader.getController();
         loginController.setAuthService(new AuthService());
+        synchronizeHeroesInBackground();
         loginController.setOnLoginSuccess(() -> {
             try {
                 showHeroes(stage);
@@ -45,22 +49,39 @@ public class Main extends Application {
         stage.show();
     }
 
+    private void synchronizeHeroesInBackground() {
+        Task<Integer> synchronizationTask = new Task<>() {
+            @Override
+            protected Integer call() throws Exception {
+                HeroRepository heroRepository = new HeroRepositoryImpl();
+                return new HeroSyncService(heroRepository).synchronize();
+            }
+        };
+
+        synchronizationTask.setOnSucceeded(event -> {
+            logger.info("Se sincronizaron {} héroes desde la API", synchronizationTask.getValue());
+            if (heroCardsController != null) {
+                heroCardsController.setHeroes(new HeroRepositoryImpl().findAll());
+            }
+        });
+        synchronizationTask.setOnFailed(event ->
+                logger.error("No se pudieron sincronizar los héroes desde la API",
+                        synchronizationTask.getException()));
+
+        Thread synchronizationThread = new Thread(synchronizationTask, "hero-api-synchronization");
+        synchronizationThread.setDaemon(true);
+        synchronizationThread.start();
+    }
+
     private void showHeroes(Stage stage) throws Exception {
         HeroRepository heroRepository = new HeroRepositoryImpl();
-        try {
-            int synchronizedHeroes = new HeroSyncService(heroRepository).synchronize();
-            logger.info("Se sincronizaron {} héroes desde la API", synchronizedHeroes);
-        } catch (Exception e) {
-            logger.error("No se pudieron sincronizar los héroes desde la API", e);
-        }
-
         List<Hero> heroes = heroRepository.findAll();
 
         FXMLLoader loader = new FXMLLoader(
                 Main.class.getResource("/org/example/HeroCardsView.fxml"));
         Parent view = loader.load();
-        HeroCardsViewController controller = loader.getController();
-        controller.setHeroes(heroes);
+        heroCardsController = loader.getController();
+        heroCardsController.setHeroes(heroes);
 
         stage.setTitle("Heroes");
         stage.setScene(new Scene(view, 900, 600));

@@ -12,7 +12,6 @@ public class Config {
     // Valores por defecto
     private static String databaseUrl = "jdbc:mysql://localhost:3307/deadlock";
     private static boolean databaseInitTables = false;
-    private static boolean databaseInitData = false;
     private static String storageData = "data";
     private static String databaseUser = "root";
     private static String databasePassword = "abc123";
@@ -28,7 +27,6 @@ public class Config {
                 properties.load(input);
                 databaseUrl = properties.getProperty("database.url", databaseUrl);
                 databaseInitTables = Boolean.parseBoolean(properties.getProperty("database.init.tables", String.valueOf(databaseInitTables)));
-                databaseInitData = Boolean.parseBoolean(properties.getProperty("database.init.data", String.valueOf(databaseInitData)));
                 storageData = properties.getProperty("storage.data", storageData);
                 databaseUser = properties.getProperty("database.user", databaseUser);
                 databasePassword = properties.getProperty("database.password", databasePassword);
@@ -46,10 +44,6 @@ public class Config {
 
     public static boolean getDatabaseInitTables() {
         return databaseInitTables;
-    }
-
-    public static boolean getDatabaseInitData() {
-        return databaseInitData;
     }
 
     public static String getStorageData() {

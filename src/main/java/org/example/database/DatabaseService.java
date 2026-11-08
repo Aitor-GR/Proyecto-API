@@ -8,14 +8,9 @@ import org.slf4j.LoggerFactory;
 
 
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.Reader;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.*;
 
@@ -29,9 +24,6 @@ public class DatabaseService implements DatabaseManager {
         initConexion();
         if (Config.getDatabaseInitTables()) {
             initTablas();
-        }
-        if (Config.getDatabaseInitData()) {
-            initData();
         }
     }
 
@@ -49,30 +41,23 @@ public class DatabaseService implements DatabaseManager {
 
     private void initTablas() {
         logger.debug("Creando tablas");
-        try {
-            URL resourceUrl = ClassLoader.getSystemResource("tables.sql");
-            Path path = Paths.get(resourceUrl.toURI());
-            String tables = Files.readString(path);
-            PreparedStatement statement = connection.prepareStatement(tables);
-            statement.executeUpdate();
+        try (InputStream input = DatabaseService.class.getClassLoader().getResourceAsStream("tables.sql")) {
+            if (input == null) {
+                throw new IOException("Recurso 'tables.sql' no encontrado");
+            }
 
-            logger.debug("Tabla estudiantes creada");
+            String tables = new String(input.readAllBytes(), StandardCharsets.UTF_8);
+            try (Statement statement = connection.createStatement()) {
+                for (String query : tables.split(";")) {
+                    if (!query.isBlank()) {
+                        statement.executeUpdate(query);
+                    }
+                }
+            }
+
+            logger.debug("Tablas creadas correctamente");
         } catch (Exception e) {
             logger.error("Error al crear las tablas: " + e.getMessage());
-        }
-    }
-
-    private void initData() {
-        logger.debug("Iniciando carga de datos");
-        try {
-            URL resourceUrl = ClassLoader.getSystemResource("data.sql");
-            Path path = Paths.get(resourceUrl.toURI());
-            String data = Files.readString(path);
-            PreparedStatement statement = connection.prepareStatement(data);
-            statement.executeUpdate();
-            logger.debug("Datos cargados");
-        } catch (Exception e) {
-            logger.error("Error al cargar los datos: " + e.getMessage());
         }
     }
 
