@@ -14,12 +14,14 @@ import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.*;
 
+/** Ejecuta consultas SQL y gestiona la conexión con MySQL. */
 public class DatabaseService implements DatabaseManager {
 
     private final Logger logger = LoggerFactory.getLogger(DatabaseService.class.getName());
 
     private Connection connection = null;
 
+    // Inicia la conexión con MySQL y, si toca, prepara las tablas.
     public DatabaseService() {
         initConexion();
         if (Config.getDatabaseInitTables()) {
@@ -27,6 +29,7 @@ public class DatabaseService implements DatabaseManager {
         }
     }
 
+    // Abre la conexión con la base de datos configurada.
     private void initConexion() {
         logger.debug("Iniciando conexión con la base de datos");
         try {
@@ -39,6 +42,7 @@ public class DatabaseService implements DatabaseManager {
         }
     }
 
+    // Crea las tablas si está activada su inicialización.
     private void initTablas() {
         logger.debug("Creando tablas");
         try (InputStream input = DatabaseService.class.getClassLoader().getResourceAsStream("tables.sql")) {
@@ -62,6 +66,7 @@ public class DatabaseService implements DatabaseManager {
     }
 
     @Override
+    // Ejecuta un SELECT y devuelve sus filas.
     public List<Map<String, Object>> select(String sql, Object... params) {
         logger.debug("Ejecutando consulta: " + sql);
         List<Map<String, Object>> result = new ArrayList<>();
@@ -88,6 +93,7 @@ public class DatabaseService implements DatabaseManager {
     }
 
     @Override
+    // Realiza la operación indicada por el nombre del método.
     public int insert(String sql, Object... params) {
         logger.debug("Ejecutando inserción: " + sql);
         int result = 0;
@@ -105,6 +111,7 @@ public class DatabaseService implements DatabaseManager {
     }
 
     @Override
+    // Inserta un registro y devuelve el identificador generado.
     public Object insertAndGetId(String sql, Object... params) {
         logger.debug("Ejecutando inserción y obteniendo ID: " + sql);
         Object result = 0;
@@ -126,6 +133,7 @@ public class DatabaseService implements DatabaseManager {
     }
 
     @Override
+    // Actualiza los datos del registro indicado.
     public int update(String query, Object... params) {
         logger.debug("Ejecutando actualización: " + query);
         int result = 0;
@@ -141,6 +149,7 @@ public class DatabaseService implements DatabaseManager {
     }
 
     @Override
+    // Elimina el registro indicado.
     public int delete(String query, Object... params) {
         logger.debug("Ejecutando borrado: " + query);
         int result = 0;
@@ -155,6 +164,7 @@ public class DatabaseService implements DatabaseManager {
         return result;
     }
 
+    // Asigna los valores a la consulta preparada.
     private void setParameters(PreparedStatement statement, Object[] params) throws SQLException {
         logger.debug("Pasando parámetros a la consulta: " + Arrays.toString(params));
         for (int i = 0; i < params.length; i++) {

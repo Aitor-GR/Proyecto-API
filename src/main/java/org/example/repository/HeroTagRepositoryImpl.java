@@ -7,22 +7,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/** Gestiona la relación entre héroes y etiquetas. */
 public class HeroTagRepositoryImpl implements HeroTagRepository {
 
     private final DatabaseManager db;
     private final TagRepository tagRepository;
 
+    // Prepara el acceso a etiquetas y a la base de datos.
     public HeroTagRepositoryImpl() {
         this.db = new DatabaseService();
         this.tagRepository = new TagRepositoryImpl(db);
     }
 
+    // Prepara el acceso a etiquetas y a la base de datos.
     public HeroTagRepositoryImpl(DatabaseManager db) {
         this.db = db;
         this.tagRepository = new TagRepositoryImpl(db);
     }
 
     @Override
+    // Devuelve las etiquetas asociadas a un héroe.
     public List<String> findTagsByHeroId(int heroId) {
 
         String sql = """
@@ -46,6 +50,7 @@ public class HeroTagRepositoryImpl implements HeroTagRepository {
     }
 
     @Override
+    // Guarda las etiquetas del héroe y sus relaciones.
     public List<String> saveTags(int heroId, List<String> tags) {
 
         if (tags == null || tags.isEmpty()) {
@@ -72,6 +77,7 @@ public class HeroTagRepositoryImpl implements HeroTagRepository {
     }
 
     @Override
+    // Reemplaza las etiquetas anteriores por la nueva lista.
     public List<String> updateTags(int heroId, List<String> tags) {
 
         String deleteSql = """

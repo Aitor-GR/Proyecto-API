@@ -10,6 +10,7 @@ import org.example.models.Hero;
 import java.util.Map;
 import java.util.List;
 
+/** Rellena una tarjeta de la interfaz con los datos de un héroe. */
 public class HeroCardController {
 
     @FXML
@@ -30,6 +31,7 @@ public class HeroCardController {
     @FXML
     private Label tagsLabel;
 
+    // Coloca los datos del héroe en los controles de su tarjeta.
     public void setHero(Hero hero) {
         setHeroImage(hero.getImages());
         nameLabel.setText(valueOrDefault(hero.getName(), "Hero #" + hero.getId()));
@@ -41,6 +43,7 @@ public class HeroCardController {
         setDetail(tagsLabel, "Tags", joinTags(hero.getTags()));
     }
 
+    // Busca una imagen disponible y la muestra en la tarjeta.
     private void setHeroImage(Map<String, String> images) {
         String imageUrl = images == null ? null : images.get("icon_hero_card");
         if (imageUrl == null || imageUrl.isBlank()) {
@@ -59,6 +62,7 @@ public class HeroCardController {
         heroImageView.setManaged(true);
     }
 
+    // Muestra un dato solo cuando tiene contenido.
     private void setDetail(Label label, String title, String value) {
         boolean visible = value != null && !value.isBlank();
         label.setVisible(visible);
@@ -68,10 +72,12 @@ public class HeroCardController {
         }
     }
 
+    // Une las etiquetas para mostrarlas en una línea.
     private String joinTags(List<String> tags) {
         return tags == null || tags.isEmpty() ? null : String.join(", ", tags);
     }
 
+    // Combina dos textos cuando ambos tienen contenido.
     private String joinValues(String first, String second) {
         if (first == null || first.isBlank()) {
             return valueOrDefault(second, "");
@@ -79,6 +85,7 @@ public class HeroCardController {
         return second == null || second.isBlank() ? first : first + " - " + second;
     }
 
+    // Devuelve un valor alternativo si el texto está vacío.
     private String valueOrDefault(String value, String defaultValue) {
         return value == null || value.isBlank() ? defaultValue : value;
     }

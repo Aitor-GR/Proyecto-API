@@ -2,6 +2,7 @@ package org.example.repository;
 
 import java.util.List;
 
+/** Declara las operaciones CRUD comunes de los repositorios. */
 public interface CrudRepository<T> {
     List<T> findAll();
     T findById(int id);

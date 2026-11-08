@@ -2,6 +2,7 @@ package org.example.repository;
 
 import java.util.List;
 
+/** Define las operaciones disponibles para trabajar con etiquetas. */
 public interface TagRepository {
 
     List<String> findAll();

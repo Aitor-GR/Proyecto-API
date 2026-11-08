@@ -13,6 +13,7 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.List;
 
+/** Descarga los héroes de la API y los sincroniza con MySQL. */
 public class HeroSyncService {
 
     private static final URI HEROES_URI =
@@ -22,6 +23,7 @@ public class HeroSyncService {
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
 
+    // Prepara el cliente HTTP que consulta la API de héroes.
     public HeroSyncService(HeroRepository heroRepository) {
         this.heroRepository = heroRepository;
         this.httpClient = HttpClient.newBuilder()
@@ -30,6 +32,7 @@ public class HeroSyncService {
         this.objectMapper = new ObjectMapper();
     }
 
+    // Descarga los héroes de la API y los guarda o actualiza en MySQL.
     public int synchronize() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder(HEROES_URI)
                 .header("Accept", "application/json")

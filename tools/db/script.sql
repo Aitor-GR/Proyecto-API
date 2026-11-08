@@ -1,3 +1,4 @@
+-- Script de desarrollo que crea la base de datos y sus tablas.
 DROP DATABASE IF EXISTS deadlock;
 CREATE DATABASE deadlock
     CHARACTER SET utf8mb4

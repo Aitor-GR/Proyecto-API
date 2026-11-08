@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/** Implementa las consultas de héroes y sus datos relacionados. */
 public class HeroRepositoryImpl implements HeroRepository {
 
     private final DatabaseManager db;
@@ -20,6 +21,7 @@ public class HeroRepositoryImpl implements HeroRepository {
     private final HeroTagRepository heroTagRepository;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    // Prepara los repositorios necesarios para guardar los datos relacionados.
     public HeroRepositoryImpl() {
 
         this.db = new DatabaseService();
@@ -31,6 +33,7 @@ public class HeroRepositoryImpl implements HeroRepository {
                 new HeroTagRepositoryImpl(db);
     }
 
+    // Prepara los repositorios necesarios para guardar los datos relacionados.
     public HeroRepositoryImpl(DatabaseManager db) {
 
         this.db = db;
@@ -43,6 +46,7 @@ public class HeroRepositoryImpl implements HeroRepository {
     }
 
     @Override
+    // Consulta y devuelve todos los registros disponibles.
     public List<Hero> findAll() {
 
         String sql = """
@@ -58,6 +62,7 @@ public class HeroRepositoryImpl implements HeroRepository {
     }
 
     @Override
+    // Busca un registro usando su identificador.
     public Hero findById(int id) {
 
         String sql = """
@@ -77,6 +82,7 @@ public class HeroRepositoryImpl implements HeroRepository {
     }
 
     @Override
+    // Inserta un registro nuevo en la base de datos.
     public Hero save(Hero hero) {
 
         String sql = """
@@ -148,6 +154,7 @@ public class HeroRepositoryImpl implements HeroRepository {
     }
 
     @Override
+    // Actualiza los datos del registro indicado.
     public Hero update(int id, Hero hero) {
 
         String sql = """
@@ -214,6 +221,7 @@ public class HeroRepositoryImpl implements HeroRepository {
     }
 
     @Override
+    // Elimina el registro indicado.
     public Hero delete(int id) {
 
         Hero hero = findById(id);
@@ -237,6 +245,7 @@ public class HeroRepositoryImpl implements HeroRepository {
     }
 
     @Override
+    // Busca héroes cuyo nombre coincide con el texto indicado.
     public List<Hero> findByNombre(String nombre) {
 
         String sql = """
@@ -252,6 +261,7 @@ public class HeroRepositoryImpl implements HeroRepository {
                 .collect(Collectors.toList());
     }
 
+    // Convierte una fila de MySQL en un objeto del modelo.
     private Hero toModel(Map<String, Object> entity) {
 
         Hero hero = new Hero();
@@ -291,6 +301,7 @@ public class HeroRepositoryImpl implements HeroRepository {
         return hero;
     }
 
+    // Convierte las imágenes del héroe a JSON para guardarlas.
     private String serializeImages(Hero hero) {
         if (hero.getImages() == null) {
             return null;
@@ -303,6 +314,7 @@ public class HeroRepositoryImpl implements HeroRepository {
         }
     }
 
+    // Lee el JSON de imágenes y lo convierte en un mapa.
     private Map<String, String> deserializeImages(Object value) {
         if (value == null) {
             return null;

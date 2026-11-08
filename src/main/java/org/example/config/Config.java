@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/** Lee los valores de configuración que necesita la aplicación. */
 public class Config {
     private static final Logger logger = LoggerFactory.getLogger(Config.class.getName());
     // Valores por defecto
@@ -38,22 +39,27 @@ public class Config {
         }
     }
 
+    // Devuelve la URL de conexión con MySQL.
     public static String getDatabaseUrl() {
         return databaseUrl;
     }
 
+    // Indica si se deben crear las tablas al iniciar.
     public static boolean getDatabaseInitTables() {
         return databaseInitTables;
     }
 
+    // Devuelve la carpeta configurada para los datos.
     public static String getStorageData() {
         return storageData;
     }
 
+    // Devuelve el usuario configurado para MySQL.
     public static String getDatabaseUser() {
         return databaseUser;
     }
 
+    // Devuelve la contraseña configurada para MySQL.
     public static String getDatabasePassword() {
         return databasePassword;
     }

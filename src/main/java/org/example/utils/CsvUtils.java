@@ -7,11 +7,14 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 
+/** Reúne las funciones auxiliares para crear ficheros CSV. */
 public final class CsvUtils {
 
+    // Realiza la operación indicada por el nombre del método.
     private CsvUtils() {
     }
 
+    // Escapa los caracteres que pueden romper una celda CSV.
     public static String escape(String value) {
         if (value == null) {
             return "";
@@ -27,6 +30,7 @@ public final class CsvUtils {
         return escaped;
     }
 
+    // Convierte los datos de un héroe en una fila CSV.
     public static String toRow(List<?> values) {
         Objects.requireNonNull(values, "values must not be null");
         return values.stream()
@@ -35,6 +39,7 @@ public final class CsvUtils {
                 .orElse("");
     }
 
+    // Escribe las filas en un fichero con codificación UTF-8.
     public static void write(Path path, List<String> rows) throws IOException {
         Objects.requireNonNull(path, "path must not be null");
         Objects.requireNonNull(rows, "rows must not be null");

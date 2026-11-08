@@ -7,16 +7,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/** Contiene consultas sencillas sobre la lista de héroes. */
 public class HeroService {
 
 
     private final List<Hero> heroes;
 
 
+    // Guarda la lista de héroes sobre la que se harán las consultas.
     public HeroService(List<Hero> heroes) {
         this.heroes = heroes;
     }
 
+    // Filtra la lista de héroes por nombre.
     public List<Hero> buscarPorNombre(String nombre) {
 
         return heroes.stream()
@@ -28,6 +31,7 @@ public class HeroService {
                 .toList();
     }
 
+    // Devuelve los héroes ordenados alfabéticamente.
     public List<Hero> ordenarPorNombre() {
 
         return heroes.stream()
@@ -39,6 +43,7 @@ public class HeroService {
                 .toList();
     }
 
+    // Devuelve solo los nombres de los héroes.
     public List<String> obtenerNombres() {
 
         return heroes.stream()
@@ -46,6 +51,7 @@ public class HeroService {
                 .toList();
     }
 
+    // Recoge las etiquetas sin repetirlas y las ordena.
     public List<String> obtenerTodosLosTags() {
 
         return heroes.stream()
@@ -58,12 +64,14 @@ public class HeroService {
                 .toList();
     }
 
+    // Cuenta cuántos héroes hay en la lista.
     public long contarHeroes() {
 
         return heroes.stream()
                 .count();
     }
 
+    // Agrupa los héroes según su tipo.
     public Map<String, List<Hero>> agruparPorTipo() {
 
         return heroes.stream()
@@ -76,6 +84,7 @@ public class HeroService {
                 );
     }
 
+    // Comprueba si hay un héroe con ese nombre.
     public boolean existeHeroe(String nombre) {
 
         return heroes.stream()
@@ -85,6 +94,7 @@ public class HeroService {
                 );
     }
 
+    // Devuelve el primer héroe o null si la lista está vacía.
     public Hero primerHeroe() {
 
         return heroes.stream()
@@ -93,6 +103,7 @@ public class HeroService {
     }
 
 
+    // Filtra los héroes que tienen la etiqueta indicada.
     public List<Hero> buscarPorTag(String tag) {
 
         return heroes.stream()
@@ -108,6 +119,7 @@ public class HeroService {
     }
 
 
+    // Devuelve los héroes que se pueden elegir para jugar.
     public List<Hero> obtenerHeroesJugables() {
 
         return heroes.stream()
@@ -116,6 +128,7 @@ public class HeroService {
     }
 
 
+    // Cuenta cuántos héroes hay de cada tipo.
     public Map<String, Long> contarHeroesPorTipo() {
 
         return heroes.stream()

@@ -7,19 +7,23 @@ import org.example.models.Description;
 import java.util.List;
 import java.util.Map;
 
+/** Implementa el acceso a las descripciones de los héroes. */
 public class DescriptionRepositoryImpl implements DescriptionRepository {
 
     private final DatabaseManager db;
 
+    // Prepara el repositorio para acceder a MySQL.
     public DescriptionRepositoryImpl() {
         this.db = new DatabaseService();
     }
 
+    // Prepara el repositorio para acceder a MySQL.
     public DescriptionRepositoryImpl(DatabaseManager db) {
         this.db = db;
     }
 
     @Override
+    // Busca la descripción asociada al identificador del héroe.
     public Description findByHeroId(int heroId) {
 
         String sql = """
@@ -38,6 +42,7 @@ public class DescriptionRepositoryImpl implements DescriptionRepository {
     }
 
     @Override
+    // Inserta un registro nuevo en la base de datos.
     public Description save(int heroId, Description description) {
 
         String sql = """
@@ -61,6 +66,7 @@ public class DescriptionRepositoryImpl implements DescriptionRepository {
     }
 
     @Override
+    // Actualiza los datos del registro indicado.
     public Description update(int heroId, Description description) {
 
         String sql = """
@@ -87,6 +93,7 @@ public class DescriptionRepositoryImpl implements DescriptionRepository {
     }
 
     @Override
+    // Elimina el registro indicado.
     public Description delete(int heroId) {
 
         Description description = findByHeroId(heroId);
@@ -109,6 +116,7 @@ public class DescriptionRepositoryImpl implements DescriptionRepository {
         return description;
     }
 
+    // Convierte una fila de MySQL en un objeto del modelo.
     private Description toModel(Map<String, Object> entity) {
 
         Description description = new Description();

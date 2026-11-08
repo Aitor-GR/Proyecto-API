@@ -1,11 +1,16 @@
+# Levanta MySQL para el entorno local de desarrollo.
 services:
+  # Servicio de base de datos usado por la aplicación.
   mysql:
+    # Imagen de MySQL que se descarga desde Docker Hub.
     image: mysql:latest
     container_name: mysql
+    # Datos iniciales de la base de datos y sus credenciales.
     environment:
       MYSQL_ROOT_PASSWORD: abc123
       MYSQL_DATABASE: deadlock
       MYSQL_USER: usuario
       MYSQL_PASSWORD: usuario1234
+    # Conecta el puerto local 3307 con el puerto 3306 del contenedor.
     ports:
       - "3307:3306"

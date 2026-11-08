@@ -2,6 +2,7 @@ package org.example.repository;
 
 import org.example.models.Description;
 
+/** Define las operaciones para consultar y guardar descripciones. */
 public interface DescriptionRepository {
 
     Description findByHeroId(int heroId);

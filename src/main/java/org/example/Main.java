@@ -20,17 +20,20 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+/** Punto de entrada de la aplicación. Carga las ventanas y coordina el inicio. */
 public class Main extends Application {
 
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     private HeroCardsViewController heroCardsController;
 
+    // Inicia la aplicación JavaFX.
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
+    // Prepara y muestra la pantalla inicial de acceso.
     public void start(Stage stage) throws Exception {
         FXMLLoader loginLoader = new FXMLLoader(
                 Main.class.getResource("/org/example/Login.fxml"));
@@ -51,9 +54,11 @@ public class Main extends Application {
         stage.show();
     }
 
+    // Lanza la sincronización en segundo plano para no bloquear la ventana.
     private void synchronizeHeroesInBackground(Stage owner) {
         Task<Integer> synchronizationTask = new Task<>() {
             @Override
+            // Ejecuta la sincronización dentro de la tarea de JavaFX.
             protected Integer call() throws Exception {
                 HeroRepository heroRepository = new HeroRepositoryImpl();
                 return new HeroSyncService(heroRepository).synchronize();
@@ -87,6 +92,7 @@ public class Main extends Application {
         synchronizationThread.start();
     }
 
+    // Carga los héroes y muestra la pantalla principal.
     private void showHeroes(Stage stage) throws Exception {
         HeroRepository heroRepository = new HeroRepositoryImpl();
         List<Hero> heroes = heroRepository.findAll();

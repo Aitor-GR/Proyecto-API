@@ -9,11 +9,13 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
+/** Lee un fichero JSON y convierte su contenido en objetos Hero. */
 public class JsonMapper {
 
 
     private final ObjectMapper mapper;
 
+    // Prepara el lector de ficheros JSON.
     public JsonMapper() {
 
         this.mapper = new ObjectMapper();
@@ -24,6 +26,7 @@ public class JsonMapper {
     }
 
 
+    // Lee un JSON y devuelve los héroes que contiene.
     public List<Hero> readHeroes(String path) throws Exception {
 
 

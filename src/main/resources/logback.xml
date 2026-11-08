@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Configuración del registro de mensajes de la aplicación. -->
 <configuration>
 
     <appender name="STDOUT"

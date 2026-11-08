@@ -9,11 +9,13 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 
+/** Guarda la lista de héroes en formato JSON. */
 public class JsonExportService {
 
     private final ObjectMapper objectMapper = new ObjectMapper()
             .enable(SerializationFeature.INDENT_OUTPUT);
 
+    // Comprueba los datos y guarda los héroes en el formato elegido.
     public void exportHeroes(List<Hero> heroes, Path destination) throws IOException {
         Objects.requireNonNull(heroes, "heroes must not be null");
         Objects.requireNonNull(destination, "destination must not be null");

@@ -2,6 +2,7 @@ package org.example.repository;
 
 import java.util.List;
 
+/** Define las operaciones con las etiquetas asociadas a héroes. */
 public interface HeroTagRepository {
 
     List<String> findTagsByHeroId(int heroId);

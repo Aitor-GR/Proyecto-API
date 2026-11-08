@@ -1,3 +1,4 @@
+/** Declara los módulos y paquetes que utiliza el proyecto. */
 module Proyecto.API.Deadlock {
     requires transitive javafx.graphics;
     requires javafx.controls;

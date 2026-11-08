@@ -13,6 +13,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
+/** Registra usuarios y comprueba sus contraseñas. */
 public class AuthService {
 
     private static final int ITERATIONS = 120_000;
@@ -29,14 +30,17 @@ public class AuthService {
         ERROR
     }
 
+    // Prepara el servicio de autenticación con la conexión por defecto.
     public AuthService() {
         this(new DatabaseService());
     }
 
+    // Prepara el servicio de autenticación con la conexión por defecto.
     public AuthService(DatabaseManager database) {
         this.database = database;
     }
 
+    // Comprueba si el usuario y la contraseña son correctos.
     public boolean authenticate(String username, String password) {
         if (username == null || username.isBlank() || password == null || password.isEmpty()) {
             return false;
@@ -66,6 +70,7 @@ public class AuthService {
         }
     }
 
+    // Cambia al formulario de registro o crea una cuenta.
     public RegistrationResult register(String username, String password) {
         if (username == null || username.isBlank() || username.length() > 100
                 || password == null || password.isEmpty()) {
@@ -93,6 +98,7 @@ public class AuthService {
         }
     }
 
+    // Genera el hash de la contraseña con el salt recibido.
     private byte[] hashPassword(char[] password, byte[] salt) throws GeneralSecurityException {
         PBEKeySpec specification = new PBEKeySpec(password, salt, ITERATIONS, KEY_LENGTH);
         try {
@@ -104,10 +110,12 @@ public class AuthService {
         }
     }
 
+    // Convierte una cadena Base64 en bytes.
     private byte[] decode(String value) {
         return Base64.getDecoder().decode(value.getBytes(StandardCharsets.UTF_8));
     }
 
+    // Convierte bytes en una cadena Base64.
     private String encode(byte[] value) {
         return Base64.getEncoder().encodeToString(value);
     }

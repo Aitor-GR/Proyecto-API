@@ -1,3 +1,4 @@
+-- Datos iniciales de ejemplo para poblar las tablas.
 USE deadlock;
 -- TAGS
 INSERT IGNORE INTO tags(name) VALUES ('A Cut Above');

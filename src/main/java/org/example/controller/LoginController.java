@@ -9,6 +9,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.example.service.AuthService;
 
+/** Gestiona el formulario de acceso y el registro de usuarios. */
 public class LoginController {
 
     @FXML
@@ -34,15 +35,18 @@ public class LoginController {
     private Runnable onLoginSuccess = () -> {
     };
 
+    // Actualiza auth service con el valor recibido.
     public void setAuthService(AuthService authService) {
         this.authService = authService;
     }
 
+    // Actualiza on login success con el valor recibido.
     public void setOnLoginSuccess(Runnable onLoginSuccess) {
         this.onLoginSuccess = onLoginSuccess;
     }
 
     @FXML
+    // Comprueba las credenciales o continúa con el registro.
     private void login(ActionEvent event) {
         if (registrationMode) {
             registerUser();
@@ -66,6 +70,7 @@ public class LoginController {
     }
 
     @FXML
+    // Cambia al formulario de registro o crea una cuenta.
     private void register(ActionEvent event) {
         if (!registrationMode) {
             registrationMode = true;
@@ -86,6 +91,7 @@ public class LoginController {
     }
 
     @FXML
+    // Vuelve al formulario de inicio de sesión.
     private void backToLogin(ActionEvent event) {
         registrationMode = false;
         usernameField.clear();
@@ -100,6 +106,7 @@ public class LoginController {
         backButton.setManaged(false);
     }
 
+    // Valida los campos y solicita crear una cuenta.
     private void registerUser() {
         if (!passwordField.getText().equals(confirmPasswordField.getText())) {
             showError("Las contraseñas no coinciden.");
@@ -121,6 +128,7 @@ public class LoginController {
         }
     }
 
+    // Muestra un aviso informativo al usuario.
     private void showInformation(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, message, ButtonType.OK);
         alert.setTitle("Registro");
@@ -128,6 +136,7 @@ public class LoginController {
         alert.showAndWait();
     }
 
+    // Muestra un aviso cuando ocurre un error.
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
         alert.setTitle("Registro");
