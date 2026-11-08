@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 /** Controla la pantalla donde se muestran, buscan y exportan los héroes. */
 public class HeroCardsViewController {
@@ -42,6 +43,8 @@ public class HeroCardsViewController {
     private List<Hero> heroes = List.of();
     private final CsvExportService csvExportService = new CsvExportService();
     private final JsonExportService jsonExportService = new JsonExportService();
+    private Consumer<Void> onOpenDle = ignored -> {
+    };
 
     @FXML
     // Configura los controles y eventos iniciales de la pantalla.
@@ -70,6 +73,15 @@ public class HeroCardsViewController {
         Objects.requireNonNull(heroes, "heroes must not be null");
         this.heroes = Collections.unmodifiableList(new ArrayList<>(heroes));
         renderCards(searchField.getText());
+    }
+
+    public void setOnOpenDle(Runnable onOpenDle) {
+        this.onOpenDle = ignored -> onOpenDle.run();
+    }
+
+    @FXML
+    private void openDle() {
+        onOpenDle.accept(null);
     }
 
     // Filtra los héroes y crea las tarjetas que coinciden.
@@ -132,7 +144,6 @@ public class HeroCardsViewController {
         });
     }
 
-    // Muestra un aviso informativo al usuario.
     private void showInformation(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, message, ButtonType.OK);
         alert.setTitle("Exportar datos");
@@ -140,7 +151,6 @@ public class HeroCardsViewController {
         alert.showAndWait();
     }
 
-    // Muestra un aviso cuando ocurre un error.
     private void showError(String message, IOException exception) {
         Alert alert = new Alert(Alert.AlertType.ERROR, message + "\n" + exception.getMessage(), ButtonType.OK);
         alert.setTitle("Error de exportación");
@@ -148,7 +158,6 @@ public class HeroCardsViewController {
         alert.showAndWait();
     }
 
-    // Comprueba si el héroe coincide con la búsqueda seleccionada.
     private boolean matchesSearch(Hero hero, String searchText, String selectedField) {
         if (searchText == null || searchText.isBlank()) {
             return true;
@@ -171,12 +180,10 @@ public class HeroCardsViewController {
         };
     }
 
-    // Comprueba si un texto contiene la búsqueda sin distinguir mayúsculas.
     private boolean contains(String value, String searchText) {
         return value != null && value.toLowerCase(Locale.ROOT).contains(searchText);
     }
 
-    // Carga el FXML de una tarjeta y le pasa los datos del héroe.
     private Node createCard(Hero hero) {
         try {
             FXMLLoader loader = new FXMLLoader(

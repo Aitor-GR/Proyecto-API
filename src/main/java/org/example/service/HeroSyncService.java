@@ -2,6 +2,7 @@ package org.example.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import org.example.models.Hero;
 import org.example.repository.HeroRepository;
 
@@ -29,7 +30,8 @@ public class HeroSyncService {
         this.httpClient = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(15))
                 .build();
-        this.objectMapper = new ObjectMapper();
+        this.objectMapper = new ObjectMapper()
+                .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
     }
 
     // Descarga los héroes de la API y los guarda o actualiza en MySQL.

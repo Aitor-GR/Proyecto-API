@@ -14,7 +14,9 @@ CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(100) NOT NULL UNIQUE,
     password_salt VARCHAR(64) NOT NULL,
-    password_hash VARCHAR(64) NOT NULL
+    password_hash VARCHAR(64) NOT NULL,
+    dle_streak INT NOT NULL DEFAULT 0,
+    dle_last_date DATE NULL
 
 );
 
