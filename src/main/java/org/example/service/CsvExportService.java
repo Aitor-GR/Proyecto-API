@@ -1,5 +1,7 @@
 package org.example.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.models.Description;
 import org.example.models.Hero;
 import org.example.utils.CsvUtils;
@@ -13,11 +15,13 @@ import java.util.Objects;
 
 public class CsvExportService {
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
     private static final List<String> HEADERS = List.of(
             "id", "name", "searchName", "gender", "className", "heroType",
             "gunTag", "developmentState", "assignedPlayersOnly",
             "inDevelopment", "disabled", "playerSelectable", "needsTesting",
-            "hideoutRichPresence", "tags", "descriptionRole",
+            "hideoutRichPresence", "images", "tags", "descriptionRole",
             "descriptionLore", "descriptionPlaystyle"
     );
 
@@ -50,10 +54,26 @@ public class CsvExportService {
                 hero.isPlayerSelectable(),
                 hero.isNeedsTesting(),
                 hero.getHideoutRichPresence(),
+                serializeImages(hero),
                 hero.getTags() == null ? null : String.join("; ", hero.getTags()),
                 description == null ? null : description.getRole(),
                 description == null ? null : description.getLore(),
                 description == null ? null : description.getPlaystyle()
         ));
+    }
+
+    private String serializeImages(Hero hero) {
+        if (hero.getImages() == null) {
+            return null;
+        }
+
+        try {
+            return objectMapper.writeValueAsString(hero.getImages());
+        } catch (JsonProcessingException exception) {
+            throw new IllegalStateException(
+                    "No se pudieron serializar las imágenes del héroe " + hero.getId(),
+                    exception
+            );
+        }
     }
 }
