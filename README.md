@@ -266,3 +266,71 @@ lógica de negocio, el acceso a datos y los modelos:
 - **SLF4J y Logback**: logging de la aplicación.
 - **API Deadlock**: fuente remota de los datos de héroes.
 
+## 4. Manual de usuario y juego de pruebas
+
+### Uso de la aplicación
+
+1. Iniciar la aplicación.
+2. Introducir usuario y contraseña y pulsar **Entrar**.
+3. Para crear una cuenta, pulsar **Registrarse**. Los campos se limpian y
+   aparece la confirmación de contraseña.
+4. Introducir usuario, contraseña y confirmación; pulsar **Crear cuenta**.
+5. Volver al formulario de login e iniciar sesión.
+6. Esperar a que se sincronicen los héroes.
+7. Utilizar el selector y el buscador para filtrar resultados.
+8. Pulsar **Exportar** y elegir CSV o JSON.
+
+### Juego de pruebas
+
+| ID  | Prueba                | Pasos                                                             | Resultado esperado                                                |
+|-----|-----------------------|-------------------------------------------------------------------|-------------------------------------------------------------------|
+| P01 | Login correcto        | Introducir credenciales válidas y pulsar Entrar                   | Se abre la pantalla de héroes                                     |
+| P02 | Login incorrecto      | Introducir una contraseña incorrecta                              | Se muestra un error y se limpia la contraseña                     |
+| P03 | Registro correcto     | Pulsar Registrarse, completar dos contraseñas iguales y registrar | Se crea la cuenta y se vuelve al login                            |
+| P04 | Contraseñas distintas | Registrar con dos contraseñas diferentes                          | Se muestra “Las contraseñas no coinciden”                         |
+| P05 | Usuario duplicado     | Registrar un usuario ya existente                                 | Se informa de que el usuario ya está registrado                   |
+| P06 | Campos vacíos         | Registrar sin usuario o contraseña                                | Se muestra un error de validación                                 |
+| P07 | Búsqueda              | Buscar por nombre, clase o tag                                    | Solo aparecen las tarjetas coincidentes                           |
+| P08 | Sin resultados        | Buscar un texto inexistente                                       | No aparecen tarjetas                                              |
+| P09 | Exportación CSV       | Pulsar Exportar y elegir CSV                                      | Se genera un fichero CSV legible                                  |
+| P10 | Exportación JSON      | Pulsar Exportar y elegir JSON                                     | Se genera un fichero JSON válido                                  |
+| P11 | Sin API disponible    | Detener la conexión o usar una API no disponible                  | Se registra el error y la aplicación no se cierra inesperadamente |
+
+### Capturas de usuario
+
+#### PO1 - Login correcto
+
+![PO1 - Login correcto](docs/PO1LoginCorrecto.png)
+
+#### PO2 - Contraseña incorrecta
+
+![PO2 - Contraseña incorrecta](docs/PO2ContraseñaIncorrecta.png)
+
+#### PO3 - Registro de usuario
+
+![PO3 - Registro de usuario](docs/PO3RegistroUsuario.png)
+
+#### PO4 - Contraseñas distintas
+
+![PO4 - Contraseñas distintas](docs/PO4ContraseñasDistintas.png)
+
+#### PO5 - Usuario duplicado
+
+![PO5 - Usuario duplicado](docs/PO5UsuarioDuplicado.png)
+
+#### PO6 - Búsqueda de héroes
+
+![PO6 - Búsqueda de héroes](docs/PO6BuscarHeroe.png)
+
+#### PO7 - Exportación CSV
+
+![PO7-1 - Exportación CSV](docs/PO7-1ExportarCSV.png)
+
+![PO7-2 - Exportación CSV](docs/PO7-2ExportarCSV.png)
+
+#### PO8 - Exportación JSON
+
+![PO8-1 - Exportación JSON](docs/PO8-1ExportarJSON.png)
+
+![PO8-2 - Exportación JSON](docs/PO8-2ExportarJSON.png)
+
