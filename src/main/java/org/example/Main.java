@@ -19,12 +19,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Main extends Application {
 
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     private HeroCardsViewController heroCardsController;
+    private List<Hero> heroes = List.of();
+    private String username;
+    private final ObservableList<Hero> dleAttempts = FXCollections.observableArrayList();
 
     public static void main(String[] args) {
         launch(args);
@@ -36,11 +41,12 @@ public class Main extends Application {
                 Main.class.getResource("/org/example/Login.fxml"));
         Parent loginView = loginLoader.load();
         LoginController loginController = loginLoader.getController();
-        loginController.setAuthService(new AuthService());
+        AuthService authService = new AuthService();
+        loginController.setAuthService(authService);
         synchronizeHeroesInBackground(stage);
         loginController.setOnLoginSuccess(() -> {
             try {
-                showHeroes(stage);
+                showHeroes(stage, authService.getAuthenticatedUsername());
             } catch (Exception exception) {
                 logger.error("No se pudo abrir la vista de héroes", exception);
             }
@@ -87,17 +93,46 @@ public class Main extends Application {
         synchronizationThread.start();
     }
 
-    private void showHeroes(Stage stage) throws Exception {
+    private void showHeroes(Stage stage, String username) throws Exception {
+        this.username = username;
         HeroRepository heroRepository = new HeroRepositoryImpl();
-        List<Hero> heroes = heroRepository.findAll();
+        heroes = heroRepository.findAll();
 
         FXMLLoader loader = new FXMLLoader(
                 Main.class.getResource("/org/example/HeroCardsView.fxml"));
         Parent view = loader.load();
         heroCardsController = loader.getController();
         heroCardsController.setHeroes(heroes);
+        heroCardsController.setOnOpenDle(() -> {
+            try {
+                showDle(stage);
+            } catch (Exception exception) {
+                logger.error("No se pudo abrir la vista DLE", exception);
+            }
+        });
 
         stage.setTitle("Heroes");
+        stage.setScene(new Scene(view, 900, 600));
+        stage.show();
+    }
+
+    private void showDle(Stage stage) throws Exception {
+        FXMLLoader loader = new FXMLLoader(
+                Main.class.getResource("/org/example/DleView.fxml"));
+        Parent view = loader.load();
+        org.example.controller.DleController controller = loader.getController();
+        controller.setHeroes(heroes);
+        controller.setUsername(username);
+        controller.setAttempts(dleAttempts);
+        controller.setOnBackToCards(() -> {
+            try {
+                showHeroes(stage, username);
+            } catch (Exception exception) {
+                logger.error("No se pudo volver al listado de héroes", exception);
+            }
+        });
+
+        stage.setTitle("DLE de héroes");
         stage.setScene(new Scene(view, 900, 600));
         stage.show();
     }
