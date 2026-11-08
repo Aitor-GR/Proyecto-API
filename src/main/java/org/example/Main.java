@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.example.controller.LoginController;
 import org.example.models.Hero;
@@ -18,6 +19,7 @@ import org.example.service.HeroSyncService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.URL;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -40,6 +42,8 @@ public class Main extends Application {
     @Override
     // Prepara y muestra la pantalla inicial de acceso.
     public void start(Stage stage) throws Exception {
+        setApplicationIcon(stage);
+
         FXMLLoader loginLoader = new FXMLLoader(
                 Main.class.getResource("/org/example/Login.fxml"));
         Parent loginView = loginLoader.load();
@@ -58,6 +62,21 @@ public class Main extends Application {
         stage.setTitle("Iniciar sesión");
         stage.setScene(new Scene(loginView));
         stage.show();
+    }
+
+    private void setApplicationIcon(Stage stage) {
+        URL iconResource = Main.class.getResource("/icons/favicon.png");
+        if (iconResource == null) {
+            logger.warn("No se encontró el icono de la aplicación en /icons/favicon.png");
+            return;
+        }
+
+        Image icon = new Image(iconResource.toExternalForm());
+        if (icon.isError()) {
+            logger.error("No se pudo cargar el icono de la aplicación desde /icons/favicon.png");
+            return;
+        }
+        stage.getIcons().setAll(icon);
     }
 
     // Lanza la sincronización en segundo plano para no bloquear la ventana.
