@@ -342,3 +342,63 @@ lógica de negocio, el acceso a datos y los modelos:
 
 ![PO10-2 - Exportación JSON](docs/PO10-2ExportarJSON.png)
 
+## 5. Reparto de tareas entre los integrantes
+
+| Integrante                 | Tareas realizadas                                                                                                                                                                                                                                                                           |
+|----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Aitor García Rosendo**   | - Estructura inicial del proyecto.<br>- Modelos y POJOs.<br>- Interfaz CRUD.<br>- Conexión con MySQL.<br>- Repositorios y persistencia de héroes.<br>- Mapeado con Jackson.<br>- Consultas mediante Streams.<br>- Configuración de la base de datos.                                        |
+| **José Ángel Álvarez Baz** | - Configuración de MySQL mediante Docker.<br>- Interfaz JavaFX y vistas FXML.<br>- Buscador y filtros por campos.<br>- Exportación a CSV y JSON.<br>- Sincronización con la API.<br>- Imágenes de los héroes.<br>- Login y registro de usuarios.<br>- Integración, pruebas y documentación. |
+
+## 6. Propuestas de mejora
+
+- Utilizar variables de entorno o un gestor de secretos para no guardar
+  credenciales de MySQL en `config.properties`.
+- Añadir requisitos mínimos de contraseña, recuperación de contraseña y
+  bloqueo temporal tras varios intentos fallidos.
+- Mantener una sesión de usuario y añadir botón de cierre de sesión.
+- Añadir paginación o carga progresiva cuando aumente el número de héroes.
+- Mostrar un mensaje visible cuando la API no esté disponible, distinguiendo
+  entre error de red, timeout y respuesta HTTP no válida.
+- Añadir validación del esquema JSON recibido por la API.
+- Crear pruebas unitarias para autenticación, repositorios, sincronización y
+  exportaciones.
+- Añadir una capa de migraciones de base de datos para actualizar el esquema
+  sin tener que ejecutar scripts manualmente.
+- Añadir roles y permisos si en el futuro existen usuarios administradores.
+- Incorporar logs estructurados y métricas de tiempo de sincronización.
+
+## 7. Conclusiones y opinión del trabajo
+
+El proyecto permite aplicar de forma práctica el consumo de una API REST, la
+deserialización de JSON, la persistencia relacional, el patrón repositorio, el
+desarrollo de interfaces JavaFX y la exportación de datos. La separación entre
+modelos, repositorios, servicios y controladores facilita el mantenimiento y
+permite añadir nuevas funcionalidades sin modificar toda la aplicación.
+
+Como aspectos positivos, destacan la sincronización automática, la búsqueda
+por varios campos y la exportación en dos formatos. También se ha incorporado
+un registro de usuarios con contraseñas derivadas mediante PBKDF2, evitando
+guardar las contraseñas en texto plano.
+
+Como limitaciones actuales, la aplicación depende de la disponibilidad de la
+API externa, la configuración de base de datos se realiza localmente y todavía
+se puede mejorar el tratamiento visual de errores y la ejecución asíncrona de
+la sincronización.
+
+### Dedicación temporal y cualificación estimada
+
+| Actividad                                            | Tiempo estimado |
+|------------------------------------------------------|----------------:|
+| Análisis del supuesto y API                          |             3 h |
+| Diseño de la base de datos                           |             3 h |
+| Desarrollo de modelos, repositorios y sincronización |            10 h |
+| Interfaz JavaFX y autenticación                      |             9 h |
+| Exportación y búsqueda                               |             5 h |
+| Pruebas y corrección de errores                      |             5 h |
+| Documentación y presentación                         |             6 h |
+| **Total**                                            |        **41 h** |
+
+La cualificación estimada del trabajo es de **notable**, porque se cubren los
+requisitos funcionales principales y se aplican varias tecnologías integradas.
+Para alcanzar una calificación superior sería recomendable completar las
+pruebas automatizadas, mejorar el manejo de errores.
