@@ -75,11 +75,13 @@ public class HeroCardsViewController {
         renderCards(searchField.getText());
     }
 
+    // Guarda la acción que se ejecuta al abrir el juego diario.
     public void setOnOpenDle(Runnable onOpenDle) {
         this.onOpenDle = ignored -> onOpenDle.run();
     }
 
     @FXML
+    // Llama a la acción configurada para abrir el DLE.
     private void openDle() {
         onOpenDle.accept(null);
     }

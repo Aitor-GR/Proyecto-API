@@ -75,11 +75,12 @@ public class AuthService {
 
     }
 
+    // Devuelve el usuario del último inicio de sesión correcto.
     public String getAuthenticatedUsername() {
         return authenticatedUsername;
     }
 
-    // Cambia al formulario de registro o crea una cuenta.
+    // Valida los datos y guarda el usuario con su hash PBKDF2.
     public RegistrationResult register(String username, String password) {
         if (username == null || username.isBlank() || username.length() > 100
                 || password == null || password.isEmpty()) {

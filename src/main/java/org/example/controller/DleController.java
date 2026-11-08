@@ -23,6 +23,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+/** Controla el juego diario, las sugerencias y la tabla de intentos. */
 public class DleController {
 
     @FXML
@@ -67,6 +68,7 @@ public class DleController {
     };
 
     @FXML
+    // Configura los eventos de la pantalla y la tabla de intentos.
     private void initialize() {
         configureAttemptTable();
         guessField.textProperty().addListener((observable, oldValue, newValue) ->
@@ -78,6 +80,7 @@ public class DleController {
         });
     }
 
+    // Guarda los héroes disponibles y selecciona el héroe del día.
     public void setHeroes(List<Hero> heroes) {
         this.heroes = List.copyOf(Objects.requireNonNull(heroes, "heroes must not be null"));
         dailyHero = selectDailyHero();
@@ -87,22 +90,26 @@ public class DleController {
         }
     }
 
+    // Guarda el usuario actual y actualiza su racha.
     public void setUsername(String username) {
         this.username = Objects.requireNonNull(username, "username must not be null");
         refreshStreak();
     }
 
+    // Conecta la lista de intentos con la tabla.
     public void setAttempts(ObservableList<Hero> attempts) {
         this.attempts = Objects.requireNonNull(attempts, "attempts must not be null");
         attemptsTable.setItems(this.attempts);
         attemptsTable.refresh();
     }
 
+    // Guarda la acción para volver al listado de héroes.
     public void setOnBackToCards(Runnable onBackToCards) {
         this.onBackToCards = ignored -> onBackToCards.run();
     }
 
     @FXML
+    // Comprueba el héroe escrito y actualiza los intentos y la racha.
     private void checkGuess() {
         String guessText = guessField.getText();
         if (dailyHero == null || guessText.isBlank()) {
@@ -142,10 +149,12 @@ public class DleController {
     }
 
     @FXML
+    // Ejecuta la acción para volver a las tarjetas.
     private void backToCards() {
         onBackToCards.accept(null);
     }
 
+    // Consulta la racha del usuario y la muestra en pantalla.
     private void refreshStreak() {
         if (streakLabel != null) {
             int streak = dleService.getStreak(username);
@@ -153,6 +162,7 @@ public class DleController {
         }
     }
 
+    // Elige el héroe que corresponde al día actual.
     private Hero selectDailyHero() {
         if (heroes.isEmpty()) {
             return null;
@@ -161,6 +171,7 @@ public class DleController {
         return heroes.get(index);
     }
 
+    // Busca un héroe por su nombre sin distinguir mayúsculas.
     private Hero findHero(String name) {
         return heroes.stream()
                 .filter(hero -> normalize(hero.getName()).equals(normalize(name)))
@@ -168,6 +179,7 @@ public class DleController {
                 .orElse(null);
     }
 
+    // Actualiza las sugerencias según el texto escrito.
     private void updateSuggestions(String text) {
         if (text == null || text.isBlank()) {
             hideSuggestions();
@@ -191,6 +203,7 @@ public class DleController {
         }
     }
 
+    // Pasa a la caja de texto la sugerencia seleccionada.
     private void selectSuggestion() {
         String selected = suggestionsList.getSelectionModel().getSelectedItem();
         if (selected == null) {
@@ -201,12 +214,14 @@ public class DleController {
         hideSuggestions();
     }
 
+    // Oculta la lista de sugerencias y limpia su selección.
     private void hideSuggestions() {
         suggestionsList.getSelectionModel().clearSelection();
         suggestionsList.setVisible(false);
         suggestionsList.setManaged(false);
     }
 
+    // Configura las columnas y el aspecto de la tabla de intentos.
     private void configureAttemptTable() {
         attemptsTable.setItems(attempts);
         imageColumn.setCellValueFactory(cell -> new javafx.beans.property.SimpleObjectProperty<>(cell.getValue()));
@@ -243,6 +258,7 @@ public class DleController {
         heroTypeColumn.setCellFactory(column -> textCell(hero -> hero.getHeroType()));
     }
 
+    // Crea una celda de texto que marca si el dato coincide.
     private TableCell<Hero, String> textCell(java.util.function.Function<Hero, String> valueProvider) {
         return new TableCell<>() {
             @Override
@@ -264,20 +280,24 @@ public class DleController {
         };
     }
 
+    // Pinta la celda en verde si coincide y en rojo si no.
     private void markMatch(TableCell<?, ?> cell, boolean matches) {
         cell.setStyle(matches
                 ? "-fx-background-color: #c6efce; -fx-text-fill: #006100;"
                 : "-fx-background-color: #ffc7ce; -fx-text-fill: #9c0006;");
     }
 
+    // Compara dos textos sin distinguir mayúsculas.
     private boolean sameValue(String first, String second) {
         return first != null && second != null && normalize(first).equals(normalize(second));
     }
 
+    // Muestra un guion cuando el dato esta vacio.
     private String displayValue(String value) {
         return value == null || value.isBlank() ? "-" : value;
     }
 
+    // Busca la URL de imagen disponible para el héroe.
     private String getImageUrl(Hero hero) {
         if (hero == null || hero.getImages() == null) {
             return null;
@@ -288,10 +308,12 @@ public class DleController {
                 : imageUrl;
     }
 
+    // Pasa el texto a minúsculas para poder compararlo.
     private String normalize(String value) {
         return value.trim().toLowerCase(Locale.ROOT);
     }
 
+    // Muestra un mensaje de error en una ventana.
     private void showError(String message) {
         new Alert(Alert.AlertType.ERROR, message, ButtonType.OK).showAndWait();
     }

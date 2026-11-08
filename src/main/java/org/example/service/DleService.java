@@ -8,18 +8,22 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+/** Consulta y actualiza la racha diaria guardada para cada usuario. */
 public class DleService {
 
     private final DatabaseManager database;
 
+    // Prepara el servicio usando la conexión por defecto.
     public DleService() {
         this(new DatabaseService());
     }
 
+    // Prepara el servicio usando la conexión por defecto.
     public DleService(DatabaseManager database) {
         this.database = database;
     }
 
+    // Consulta la racha actual del usuario.
     public int getStreak(String username) {
         List<Map<String, Object>> users = database.select(
                 "SELECT dle_streak FROM users WHERE username = ?",
@@ -31,6 +35,7 @@ public class DleService {
         return streak.intValue();
     }
 
+    // Guarda la victoria y calcula la nueva racha diaria.
     public int recordWin(String username, LocalDate today) {
         List<Map<String, Object>> users = database.select(
                 "SELECT dle_streak, dle_last_date FROM users WHERE username = ?",
@@ -60,6 +65,7 @@ public class DleService {
         return newStreak;
     }
 
+    // Convierte la fecha que devuelve MySQL a LocalDate.
     private LocalDate toLocalDate(Object value) {
         return value instanceof Date date ? date.toLocalDate() : null;
     }

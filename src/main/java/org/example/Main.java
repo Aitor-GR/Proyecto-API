@@ -98,10 +98,9 @@ public class Main extends Application {
         synchronizationThread.start();
     }
 
+    // Guarda el usuario autenticado y carga la pantalla principal.
     private void showHeroes(Stage stage, String username) throws Exception {
         this.username = username;
-    // Carga los héroes y muestra la pantalla principal.
-    private void showHeroes(Stage stage) throws Exception {
         HeroRepository heroRepository = new HeroRepositoryImpl();
         heroes = heroRepository.findAll();
 
@@ -123,6 +122,7 @@ public class Main extends Application {
         stage.show();
     }
 
+    // Abre el juego diario y le pasa los datos que necesita.
     private void showDle(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(
                 Main.class.getResource("/org/example/DleView.fxml"));

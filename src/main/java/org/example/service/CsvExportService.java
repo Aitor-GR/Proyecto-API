@@ -65,6 +65,7 @@ public class CsvExportService {
         ));
     }
 
+    // Convierte las imágenes del héroe a JSON para incluirlas en el CSV.
     private String serializeImages(Hero hero) {
         if (hero.getImages() == null) {
             return null;
