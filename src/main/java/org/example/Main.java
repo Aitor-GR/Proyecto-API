@@ -5,6 +5,8 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import org.example.controller.LoginController;
 import org.example.models.Hero;
@@ -35,7 +37,7 @@ public class Main extends Application {
         Parent loginView = loginLoader.load();
         LoginController loginController = loginLoader.getController();
         loginController.setAuthService(new AuthService());
-        synchronizeHeroesInBackground();
+        synchronizeHeroesInBackground(stage);
         loginController.setOnLoginSuccess(() -> {
             try {
                 showHeroes(stage);
@@ -49,7 +51,7 @@ public class Main extends Application {
         stage.show();
     }
 
-    private void synchronizeHeroesInBackground() {
+    private void synchronizeHeroesInBackground(Stage owner) {
         Task<Integer> synchronizationTask = new Task<>() {
             @Override
             protected Integer call() throws Exception {
@@ -64,9 +66,21 @@ public class Main extends Application {
                 heroCardsController.setHeroes(new HeroRepositoryImpl().findAll());
             }
         });
-        synchronizationTask.setOnFailed(event ->
-                logger.error("No se pudieron sincronizar los héroes desde la API",
-                        synchronizationTask.getException()));
+        synchronizationTask.setOnFailed(event -> {
+            Throwable exception = synchronizationTask.getException();
+            logger.error("No se pudieron sincronizar los héroes desde la API", exception);
+
+            Alert alert = new Alert(
+                    Alert.AlertType.ERROR,
+                    "No se pudieron sincronizar los héroes con la API.\n"
+                            + exception.getMessage(),
+                    ButtonType.OK
+            );
+            alert.setTitle("Error de sincronización");
+            alert.setHeaderText(null);
+            alert.initOwner(owner);
+            alert.showAndWait();
+        });
 
         Thread synchronizationThread = new Thread(synchronizationTask, "hero-api-synchronization");
         synchronizationThread.setDaemon(true);
